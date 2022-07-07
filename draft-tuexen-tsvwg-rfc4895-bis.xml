@@ -6,10 +6,13 @@
 <?rfc subcompact="no" ?>
 <!-- <?rfc strict="yes" ?> -->
 
-<rfc number="4895" category="std">
+<rfc category="std"
+     ipr="pre5378Trust200902"
+     obsoletes="4895"
+     docName="draft-tuexen-tsvwg-rfc4895-bis-00">
 <front>
 <title abbrev="SCTP Authentication Chunk">
-Authenticated Chunks for Stream Control Transmission Protocol (SCTP)
+Authenticated Chunks for the Stream Control Transmission Protocol (SCTP)
 </title>
 
 
@@ -71,12 +74,7 @@ Authenticated Chunks for Stream Control Transmission Protocol (SCTP)
 </address>
 </author>
 
-<date month="August" year="2007" />
-
-<!-- RFC Editor Comment: Please insert any keywords (beyond those that
-appear in the title) for use on
-http://www.rfc-editor.org/search.html.  Use the keyword tag as it is
-used below. -->
+<date />
 
 <keyword>Internet-Draft</keyword>
 
@@ -778,8 +776,8 @@ the first is the addition of three new lines to the "INIT Chunk Parameter Types"
 table:
 <figure>
 <artwork>
-Chunk Parameter Type			   Value
---------------------			   -----
+Chunk Parameter Type                       Value
+--------------------                       -----
 Random                             32770 (0x8002)
 Chunk List                         32771 (0x8003)
 Requested HMAC Algorithm Parameter 32772 (0x8004)
