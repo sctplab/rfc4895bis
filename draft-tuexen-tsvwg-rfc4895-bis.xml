@@ -169,7 +169,6 @@ Section 3.2.1.) by the  use of the upper bits of the parameter type.</t>
 
 <section anchor="random" title="Random Parameter (RANDOM)">
 <t>This parameter is used to carry a random number of an arbitrary length.</t>
-<figure>
 <artwork>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -182,7 +181,6 @@ Section 3.2.1.) by the  use of the upper bits of the parameter type.</t>
 |                               |           Padding             |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
-</figure>
 <dl newline="true">
 <dt>Parameter Type: 2 bytes (unsigned integer)</dt>
 <dd>
@@ -215,7 +213,6 @@ For 32-byte Random Numbers, the Padding is empty.</t>
 
 <t>This parameter is used to specify which chunk types are
 required to be authenticated before being sent by the peer.</t>
-<figure>
 <artwork>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -231,7 +228,6 @@ required to be authenticated before being sent by the peer.</t>
 | Chunk Type n  |                   Padding                     |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
-</figure>
 <dl newline="true">
 <dt>Parameter Type: 2 bytes (unsigned integer)</dt>
 <dd>
@@ -269,7 +265,6 @@ be ignored.</t>
 
 <t>This parameter is used to list the HMAC Identifiers the peer
 <bcp14>MUST</bcp14> use.</t>
-<figure>
 <artwork>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -285,7 +280,6 @@ be ignored.</t>
 |        HMAC Identifier n      |           Padding             |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
-</figure>
 <dl newline="true">
 <dt>Parameter Type: 2 bytes (unsigned integer)</dt>
 <dd>
@@ -348,7 +342,6 @@ an AUTH chunk is received with an unsupported HMAC Identifier.
          title="Unsupported HMAC Identifier Error Cause">
 <t>This error cause is used to indicate that an AUTH chunk has been received
 with an unsupported HMAC Identifier.</t>
-<figure>
 <artwork>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -358,7 +351,6 @@ with an unsupported HMAC Identifier.</t>
 |         HMAC Identifier       |            Padding            |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
-</figure>
 <dl newline="true">
 <dt>Cause Code: 2 bytes (unsigned integer)</dt>
 <dd>
@@ -406,7 +398,6 @@ Section 3.2.) by the use of the upper bits of the chunk type.</t>
 <section anchor="auth" title="Authentication Chunk (AUTH)">
 
 <t>This chunk is used to hold the result of the HMAC calculation.</t>
-<figure>
 <artwork>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -422,7 +413,6 @@ Section 3.2.) by the use of the upper bits of the chunk type.</t>
 |                               |           Padding             |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
-</figure>
 <dl newline="true">
 <dt>Type: 1 byte (unsigned integer)</dt>
 <dd>
@@ -780,16 +770,13 @@ The changes are described below.</t>
 IANA has assigned the value (15), as given in <xref target="chunktable"/>.
 An additional line has been added in the "CHUNK TYPES" table of
 <eref target="http://www.iana.org/assignments/sctp-parameters">SCTP-parameters</eref>:</t>
-
-<figure>
 <artwork>
 CHUNK TYPES
 
 ID Value    Chunk Type                                     Reference
------       ----------                                     ---------
+--------    ----------                                     ---------
 15          Authentication Chunk (AUTH)                    [RFC4895]
 </artwork>
-</figure>
 </section>
 
 <section title="Three New Parameter Types">
