@@ -6,7 +6,7 @@
      submissionType="IETF"
      consensus="true"
      category="std"
-     docName="draft-tuexen-tsvwg-rfc4895-bis-01"
+     docName="draft-tuexen-tsvwg-rfc4895-bis-02"
      obsoletes="4895"
      version="3"
      tocDepth="4">
@@ -141,11 +141,15 @@ with the extension described in this document.</t>
 
 <!-- ************** CONVENTIONS *************** -->
 <section anchor="conventions" title="Conventions">
-<t>The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
-"SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL", when
-they appear in this document, are to be interpreted as described in
-<xref target="RFC2119">RFC 2119</xref>.</t>
-</section> <!-- conventions -->
+<t>The key words "<bcp14>MUST</bcp14>", "<bcp14>MUST NOT</bcp14>",
+"<bcp14>REQUIRED</bcp14>", "<bcp14>SHALL</bcp14>", "<bcp14>SHALL NOT</bcp14>",
+"<bcp14>SHOULD</bcp14>", "<bcp14>SHOULD NOT</bcp14>",
+"<bcp14>RECOMMENDED</bcp14>", "<bcp14>NOT RECOMMENDED</bcp14>",
+"<bcp14>MAY</bcp14>", and "<bcp14>OPTIONAL</bcp14>" in this document are to
+be interpreted as described in
+BCP 14 <xref target="RFC2119"/> <xref target="RFC8174"/> when, and only when,
+they appear in all capitals, as shown here.</t>
+</section>
 
 <!-- **********Parameter types***************** -->
 <section anchor="parametertypes" title="New Parameter Types">
@@ -188,7 +192,7 @@ Section 3.2.1.) by the  use of the upper bits of the parameter type.</t>
 <dl newline="true">
 <dt>Parameter Type: 2 bytes (unsigned integer)</dt>
 <dd>
-<t>This value MUST be set to 0x8002.</t>
+<t>This value <bcp14>MUST</bcp14> be set to 0x8002.</t>
 </dd>
 <dt>Parameter Length: 2 bytes (unsigned integer)</dt>
 <dd>
@@ -201,14 +205,14 @@ Section 3.2.1.) by the  use of the upper bits of the parameter type.</t>
 <dt>Padding: 0, 1, 2, or 3 bytes (unsigned integer)</dt>
 <dd>
 <t>If the length of the Random Number is not a multiple of 4 bytes,
-the sender MUST pad the parameter with all zero bytes to make
+the sender <bcp14>MUST</bcp14> pad the parameter with all zero bytes to make
 the parameter 32-bit aligned.
-The Padding MUST NOT be longer than 3 bytes and it MUST be ignored by the
-receiver.</t>
+The Padding <bcp14>MUST NOT</bcp14> be longer than 3 bytes and it MUST be
+ignored by the receiver.</t>
 </dd>
 </dl>
-<t>The RANDOM parameter MUST be included once in the INIT or INIT-ACK
-chunk, if the sender wants to send or receive authenticated chunks,
+<t>The RANDOM parameter <bcp14>MUST</bcp14> be included once in the INIT or
+INIT-ACK chunk, if the sender wants to send or receive authenticated chunks,
 to provide a 32-byte Random Number.
 For 32-byte Random Numbers, the Padding is empty.</t>
 </section>
@@ -237,7 +241,7 @@ required to be authenticated before being sent by the peer.</t>
 <dl newline="true">
 <dt>Parameter Type: 2 bytes (unsigned integer)</dt>
 <dd>
-<t>This value MUST be set to 0x8003.</t>
+<t>This value <bcp14>MUST</bcp14> be set to 0x8003.</t>
 </dd>
 <dt>Parameter Length: 2 bytes (unsigned integer)</dt>
 <dd>
@@ -251,26 +255,26 @@ sent by the peer.</t>
 <dt>Padding: 0, 1, 2, or 3 bytes (unsigned integer)</dt>
 <dd>
 <t>If the number of Chunk Types is not a multiple of 4,
-the sender MUST pad the parameter with all zero bytes to make
+the sender <bcp14>MUST</bcp14> pad the parameter with all zero bytes to make
 the parameter 32-bit aligned.
-The Padding MUST NOT be longer than 3 bytes and it MUST be ignored by the
-receiver.</t>
+The Padding <bcp14>MUST NOT</bcp14> be longer than 3 bytes and it MUST be
+ignored by the receiver.</t>
 </dd>
 </dl>
-<t>The CHUNKS parameter MUST be included once in the INIT or INIT-ACK
-chunk if the sender wants to receive authenticated chunks.
+<t>The CHUNKS parameter <bcp14>MUST</bcp14> be included once in the INIT or
+INIT-ACK chunk if the sender wants to receive authenticated chunks.
 Its maximum length is 260 bytes.</t>
 <t>The chunk types for INIT, INIT-ACK, SHUTDOWN-COMPLETE, and
-AUTH chunks MUST NOT be listed in the CHUNKS parameter.
+AUTH chunks <bcp14>MUST NOT</bcp14> be listed in the CHUNKS parameter.
 However, if a CHUNKS parameter is received then the types
-for INIT, INIT-ACK, SHUTDOWN-COMPLETE, and AUTH chunks MUST
+for INIT, INIT-ACK, SHUTDOWN-COMPLETE, and AUTH chunks <bcp14>MUST</bcp14>
 be ignored.</t>
 </section>
 
 <section anchor="hmacalgo" title="Requested HMAC Algorithm Parameter (HMAC-ALGO)">
 
 <t>This parameter is used to list the HMAC Identifiers the peer
-MUST use.</t>
+<bcp14>MUST</bcp14> use.</t>
 <figure>
 <artwork>
  0                   1                   2                   3
@@ -291,7 +295,7 @@ MUST use.</t>
 <dl newline="true">
 <dt>Parameter Type: 2 bytes (unsigned integer)</dt>
 <dd>
-<t>This value MUST be set to 0x8004.</t>
+<t>This value <bcp14>MUST</bcp14> be set to 0x8004.</t>
 </dd>
 <dt>Parameter Length: 2 bytes (unsigned integer)</dt>
 <dd>
@@ -306,13 +310,14 @@ first HMAC Identifier listed is the one most preferable to the sender.</t>
 </dd>
 <dt>Padding: 0 or 2 bytes (unsigned integer)</dt>
 <dd>
-<t>If the number of HMAC Identifiers is not even, the sender MUST pad the
-parameter with all zero bytes to make the parameter 32-bit aligned.
-The Padding MUST be 0 or 2 bytes long and it MUST be ignored by the receiver.</t>
+<t>If the number of HMAC Identifiers is not even, the sender <bcp14>MUST</bcp14>
+pad the parameter with all zero bytes to make the parameter 32-bit aligned.
+The Padding <bcp14>MUST</bcp14> be 0 or 2 bytes long and it MUST be ignored by
+the receiver.</t>
 </dd>
 </dl>
-<t>The HMAC-ALGO parameter MUST be included once in the INIT or INIT-ACK
-chunk if the sender wants to send or receive authenticated chunks.</t>
+<t>The HMAC-ALGO parameter <bcp14>MUST</bcp14> be included once in the INIT or
+INIT-ACK chunk if the sender wants to send or receive authenticated chunks.</t>
 
 <t><xref target="Digesttable"/> shows the currently defined values for
 HMAC Identifiers.</t>
@@ -327,8 +332,8 @@ HMAC Identifiers.</t>
 <tr><td>3</td>              <td>SHA-256 defined in <xref target="FIPS.180-2.2002"/></td></tr>
 </tbody>
 </table>
-<t>Every endpoint supporting SCTP chunk authentication MUST support
-the HMAC based on the SHA-1 algorithm.</t>
+<t>Every endpoint supporting SCTP chunk authentication <bcp14>MUST</bcp14>
+support the HMAC based on the SHA-1 algorithm.</t>
 </section>
 </section>
 
@@ -363,11 +368,11 @@ with an unsupported HMAC Identifier.</t>
 <dl newline="true">
 <dt>Cause Code: 2 bytes (unsigned integer)</dt>
 <dd>
-<t>This value MUST be set to 0x0105.</t>
+<t>This value <bcp14>MUST</bcp14> be set to 0x0105.</t>
 </dd>
 <dt>Cause Length: 2 bytes (unsigned integer)</dt>
 <dd>
-<t>This value MUST be set to 6.</t>
+<t>This value <bcp14>MUST</bcp14> be set to 6.</t>
 </dd>
 <dt>HMAC Identifier: 2 bytes (unsigned integer)</dt>
 <dd>
@@ -375,9 +380,10 @@ with an unsupported HMAC Identifier.</t>
 </dd>
 <dt>Padding: 2 bytes (unsigned integer)</dt>
 <dd>
-<t>The sender MUST pad the error cause with all zero bytes to make
-the cause 32-bit aligned.
-The Padding MUST be 2 bytes long and it MUST be ignored by the receiver.</t>
+<t>The sender <bcp14>MUST</bcp14> pad the error cause with all zero bytes
+to make the cause 32-bit aligned.
+The Padding <bcp14>MUST</bcp14> be 2 bytes long and it MUST be ignored by the
+receiver.</t>
 </dd>
 </dl>
 </section>
@@ -426,11 +432,12 @@ Section 3.2.) by the use of the upper bits of the chunk type.</t>
 <dl newline="true">
 <dt>Type: 1 byte (unsigned integer)</dt>
 <dd>
-<t>This value MUST be set to 0x0F for all AUTH-chunks.</t>
+<t>This value <bcp14>MUST</bcp14> be set to 0x0F for all AUTH-chunks.</t>
 </dd>
 <dt>Flags: 1 byte (unsigned integer)</dt>
 <dd>
-<t>SHOULD be set to zero on transmit and MUST be ignored on receipt.</t>
+<t><bcp14>SHOULD</bcp14> be set to zero on transmit and <bcp14>MUST</bcp14> be
+ignored on receipt.</t>
 </dd>
 <dt>Length: 2 bytes (unsigned integer)</dt>
 <dd>
@@ -452,13 +459,14 @@ Section 3.2.) by the use of the upper bits of the chunk type.</t>
 <dt>Padding: 0, 1, 2, or 3 bytes (unsigned integer)</dt>
 <dd>
 <t>If the length of the HMAC is not a multiple of 4 bytes,
-the sender MUST pad the chunk with all zero bytes to make
+the sender <bcp14>MUST</bcp14> pad the chunk with all zero bytes to make
 the chunk 32-bit aligned.
-The Padding MUST NOT be longer than 3 bytes and it MUST be ignored by
-the receiver.</t>
+The Padding <bcp14>MUST NOT</bcp14> be longer than 3 bytes and it
+<bcp14>MUST</bcp14> be ignored by the receiver.</t>
 </dd>
 </dl>
-<t>The control chunk AUTH MUST NOT appear more than once in an SCTP packet.
+<t>The control chunk AUTH <bcp14>MUST NOT</bcp14> appear more than once in an
+SCTP packet.
 All control and data chunks that are placed after the AUTH chunk in
 the packet are sent in an authenticated way.
 Those chunks placed in a packet before the AUTH chunk are not authenticated.
@@ -471,12 +479,14 @@ SCTP packet.</t>
 <section title="Procedures">
 <section anchor="establishproc" title="Establishment of an Association Shared Key">
 <t>An SCTP endpoint willing to receive or send authenticated chunks
-MUST send one RANDOM parameter in its INIT or INIT-ACK chunk.
-The RANDOM parameter MUST contain a 32-byte Random Number.
+<bcp14>MUST</bcp14> send one RANDOM parameter in its INIT or INIT-ACK chunk.
+The RANDOM parameter <bcp14>MUST</bcp14> contain a 32-byte Random Number.
 The Random Number should be generated in accordance with
 <xref target="RFC4086">RFC 4086</xref>.
-If the Random Number is not 32 bytes, the association MUST be aborted.
-The ABORT chunk SHOULD contain the error cause 'Protocol Violation'.
+If the Random Number is not 32 bytes, the association <bcp14>MUST</bcp14> be
+aborted.
+The ABORT chunk <bcp14>SHOULD</bcp14> contain the error cause
+'Protocol Violation'.
 In case of INIT collision, the rules governing the handling of this
 Random Number follow the same pattern as those for the Verification Tag,
 as explained in Section 5.2.4 of <xref target="RFC2960">RFC 2960</xref>.
@@ -485,22 +495,23 @@ Random Number after the association has been established.</t>
 
 <t>An SCTP endpoint has a list of chunks it only accepts if they are
 received in an authenticated way.
-This list is included in the INIT and INIT-ACK, and MAY be omitted if it
-is empty.
+This list is included in the INIT and INIT-ACK, and <bcp14>MAY</bcp14> be
+omitted if it is empty.
 Since this list does not change during the lifetime of the SCTP endpoint
 there is no problem in case of INIT collision.</t> 
 
-<t>Each SCTP endpoint MUST include in the INIT and INIT-ACK a HMAC-ALGO
-parameter containing a list of HMAC Identifiers it requests the peer to use.
-The receiver of an HMAC-ALGO parameter SHOULD use the first listed algorithm it
-supports.
-The HMAC algorithm based on SHA-1 MUST be supported and included in the
-HMAC-ALGO parameter.
-An SCTP endpoint MUST NOT change the parameters listed in the HMAC-ALGO
-parameter during the lifetime of the endpoint.</t>
+<t>Each SCTP endpoint <bcp14>MUST</bcp14> include in the INIT and INIT-ACK a
+HMAC-ALGO parameter containing a list of HMAC Identifiers it requests the peer
+to use.
+The receiver of an HMAC-ALGO parameter <bcp14>SHOULD</bcp14> use the first
+listed algorithm it supports.
+The HMAC algorithm based on SHA-1 <bcp14>MUST</bcp14> be supported and included
+in the HMAC-ALGO parameter.
+An SCTP endpoint <bcp14>MUST NOT</bcp14> change the parameters listed in the
+HMAC-ALGO parameter during the lifetime of the endpoint.</t>
 
-<t>Both endpoints of an association MAY have endpoint pair shared keys
-that are byte vectors and pre-configured or established by another
+<t>Both endpoints of an association <bcp14>MAY</bcp14> have endpoint pair
+shared keys that are byte vectors and pre-configured or established by another
 mechanism.
 They are identified by the Shared Key Identifier.
 For each endpoint pair shared key, an association shared key is computed.
@@ -511,7 +522,7 @@ is computed by using an empty byte vector as the endpoint pair shared key.</t>
 parameter sent by each endpoint are concatenated as byte vectors.
 These parameters include the parameter type, parameter length,
 and the parameter value, but padding is omitted; all padding
-MUST be removed from this concatenation before proceeding with
+<bcp14>MUST</bcp14> be removed from this concatenation before proceeding with
 further computation of keys.
 Parameters that were not sent are simply omitted from the
 concatenation process.
@@ -533,25 +544,27 @@ The result of the concatenation is the association shared key.</t>
 
 <section anchor="senderproc" title="Sending Authenticated Chunks" >
  
-<t>Endpoints MUST send all requested chunks that have been authenticated where this
-has been requested by the peer.
-The other chunks MAY be sent whether or not they have been authenticated.
-If endpoint pair shared keys are used, one of them MUST be selected for
-authentication.</t>
+<t>Endpoints <bcp14>MUST</bcp14> send all requested chunks that have been
+authenticated where this has been requested by the peer.
+The other chunks <bcp14>MAY</bcp14> be sent whether or not they have been
+authenticated.
+If endpoint pair shared keys are used, one of them <bcp14>MUST</bcp14> be
+selected for authentication.</t>
 
-<t>To send chunks in an authenticated way, the
-sender MUST include these chunks after an AUTH chunk.
-This means that a sender MUST bundle chunks in order to
+<t>To send chunks in an authenticated way, the sender <bcp14>MUST</bcp14>
+include these chunks after an AUTH chunk.
+This means that a sender <bcp14>MUST</bcp14> bundle chunks in order to
 authenticate them.</t>
 
-<t>If the endpoint has no endpoint pair shared key for the peer, it MUST use
-Shared Key Identifier zero with an empty endpoint pair shared key.
+<t>If the endpoint has no endpoint pair shared key for the peer, it
+<bcp14>MUST</bcp14> use Shared Key Identifier zero with an empty endpoint pair
+shared key.
 If there are multiple endpoint shared keys the sender selects one and
 uses the corresponding Shared Key Identifier.</t>
 
-<t>The sender MUST calculate the Message Authentication Code (MAC) (as described in
-<xref target="RFC2104">RFC 2104</xref>) using the hash function H as
-described by the HMAC Identifier and the shared association key K
+<t>The sender <bcp14>MUST</bcp14> calculate the Message Authentication Code (MAC)
+(as described in <xref target="RFC2104">RFC 2104</xref>) using the hash
+function H as described by the HMAC Identifier and the shared association key K
 based on the endpoint pair shared key described by the Shared Key
 Identifier.
 The 'data' used for the computation of the AUTH-chunk
@@ -579,8 +592,8 @@ the SCTP packet.</t>
 the field that will contain the complete HMAC is filled with zeroes.
 The length of the field shown as zero is the length of the HMAC described
 by the HMAC Identifier.
-The padding of all chunks being authenticated MUST be included in the
-HMAC computation.</t>
+The padding of all chunks being authenticated <bcp14>MUST</bcp14> be included
+in the HMAC computation.</t>
 
 <t>The sender fills the HMAC into the HMAC field and sends
 the packet.</t>
@@ -591,24 +604,25 @@ the packet.</t>
 <t>The receiver has a list of chunk types that
 it expects to be received only after an AUTH-chunk.
 This list has been sent to the peer during the association setup.
-It MUST silently discard these chunks if they are not placed
+It <bcp14>MUST</bcp14> silently discard these chunks if they are not placed
 after an AUTH chunk in the packet.</t>
 
-<t>The receiver MUST use the HMAC algorithm indicated in
+<t>The receiver <bcp14>MUST</bcp14> use the HMAC algorithm indicated in
 the HMAC Identifier field.
 If this algorithm was not specified by the receiver in the HMAC-ALGO parameter
 in the INIT or INIT-ACK chunk during association setup, the AUTH chunk and all
-the chunks after it MUST be discarded and an ERROR chunk SHOULD be sent with
-the error cause defined in <xref target="unsupportedhmacid"/>.</t>
+the chunks after it <bcp14>MUST</bcp14> be discarded and an ERROR chunk
+<bcp14>SHOULD</bcp14> be sent with the error cause defined in
+<xref target="unsupportedhmacid"/>.</t>
 
 <t>If an endpoint with no shared key receives a
-Shared Key Identifier other than 0, it MUST silently discard
+Shared Key Identifier other than 0, it <bcp14>MUST</bcp14> silently discard
 all authenticated chunks.
 If the endpoint has at least one endpoint pair shared key for the
-peer, it MUST use the key specified by the Shared Key Identifier
+peer, it <bcp14>MUST</bcp14> use the key specified by the Shared Key Identifier
 if a key has been configured for that Shared Key Identifier.
 If no endpoint pair shared key has been configured for that
-Shared Key Identifier, all authenticated chunks MUST be silently
+Shared Key Identifier, all authenticated chunks <bcp14>MUST</bcp14> be silently
 discarded.</t>
 
 <t>The receiver now performs the same calculation as described
@@ -616,7 +630,7 @@ for the sender based on <xref target="dataformat"/>.
 If the result of the calculation is the same as given in the
 HMAC field, all the chunks following the AUTH chunk are processed.
 If the field does not match the result of the calculation, all the
-chunks following the AUTH chunk MUST be silently discarded.</t>
+chunks following the AUTH chunk <bcp14>MUST</bcp14> be silently discarded.</t>
 
 <t>It should be noted that if the receiver wants to tear down an association
 in an authenticated way only, the handling of malformed packets should
@@ -634,34 +648,36 @@ COOKIE-ECHO chunk as the second chunk, and possibly more chunks
 after them, and the receiver does not have an STCB for that
 packet, then authentication is based on the contents of the COOKIE-ECHO
 chunk.
-In this situation, the receiver MUST authenticate the chunks in
+In this situation, the receiver <bcp14>MUST</bcp14> authenticate the chunks in
 the packet by using the RANDOM parameters, CHUNKS parameters and
 HMAC_ALGO parameters obtained from the COOKIE-ECHO chunk, and
 possibly a local shared secret as inputs to the authentication
 procedure specified in <xref target="recvproc"/>.
 If authentication fails, then the packet is discarded.
 If the authentication is successful, the COOKIE-ECHO and all the chunks after
-the COOKIE-ECHO MUST be processed.
-If the receiver has an  STCB, it MUST process the AUTH chunk as described above
-using the STCB from the existing association to authenticate the COOKIE-ECHO
-chunk and all the chunks after it.</t>
+the COOKIE-ECHO <bcp14>MUST</bcp14> be processed.
+If the receiver has an  STCB, it <bcp14>MUST</bcp14> process the AUTH chunk as
+described above using the STCB from the existing association to authenticate
+the COOKIE-ECHO chunk and all the chunks after it.</t>
 
 <t>If the receiver does not find an STCB for a packet
 containing an AUTH chunk as the first chunk and does not find a COOKIE-ECHO
-chunk as the second chunk, it MUST use the chunks after the AUTH
+chunk as the second chunk, it <bcp14>MUST</bcp14> use the chunks after the AUTH
 chunk to look up an existing association.
-If no association is found, the packet MUST be considered as out of the blue.
-The out of the blue handling MUST be based on the packet without
+If no association is found, the packet <bcp14>MUST</bcp14> be considered as out
+of the blue.
+The out of the blue handling <bcp14>MUST</bcp14> be based on the packet without
 taking the AUTH chunk into account.
-If an association is found, it MUST process the AUTH chunk using the STCB from
-the existing association as described earlier.</t>
+If an association is found, it <bcp14>MUST</bcp14> process the AUTH chunk using
+the STCB from the existing association as described earlier.</t>
 
 <!--
 <t>If the receiver of the packet does not have a STCB when it needs to
-process the AUTH chunk, it MUST ignore the AUTH chunk.
+process the AUTH chunk, it <bcp14>MUST</bcp14> ignore the AUTH chunk.
 This applies to a packet containing an AUTH chunk as a first chunk and an
 COOKIE-ECHO chunk as the second chunk received in the CLOSED state.
-If the receiver has a STCB, it MUST process the AUTH chunk as described above.</t>
+If the receiver has a STCB, it <bcp14>MUST</bcp14> process the AUTH chunk as
+described above.</t>
 -->
 
 <t>Requiring ABORT chunks and COOKIE-ECHO chunks to be authenticated
@@ -687,8 +703,8 @@ only associations from clients with a correct endpoint pair shared key
 are accepted.</t>
 
 <t>Furthermore, it is important that the cookie contained in an INIT-ACK
-chunk and in a COOKIE-ECHO chunk MUST NOT contain any endpoint pair
-shared keys.</t>
+chunk and in a COOKIE-ECHO chunk <bcp14>MUST NOT</bcp14> contain any
+endpoint pair shared keys.</t>
 </section>
 
 </section>
@@ -832,9 +848,10 @@ HMAC Identifier      Message Digest Algorithm             REFERENCE
 <t>For registering a new HMAC Identifier with IANA, in this table, a request
 has to be made to assign such a number.
 This number must be unique and a message digest algorithm usable with the
-HMAC defined in <xref target="RFC2104">RFC 2104</xref> MUST be specified.
+HMAC defined in <xref target="RFC2104">RFC 2104</xref> <bcp14>MUST</bcp14> be
+specified.
 The "Specification Required" policy of <xref target="RFC2434">RFC 2434</xref>
-MUST be applied.
+<bcp14>MUST</bcp14> be applied.
 </t>
 </section>
 </section>
@@ -908,6 +925,7 @@ for their invaluable comments.</t>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2960.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3436.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4086.xml"/>
+<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml-misc/reference.FIPS.180-2.2002.xml"/>
 </references>
 </back>
