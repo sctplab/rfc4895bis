@@ -31,23 +31,23 @@ Authenticated Chunks for the Stream Control Transmission Protocol (SCTP)
 </author>
 
 <!-- ************** RANDALL STEWART ***************-->
-<author initials="R. R." surname="Stewart" fullname="Randall R. Stewart">
-<organization>Cisco Systems, Inc.</organization>
+<author initials="R." surname="Stewart" fullname="Randall R. Stewart">
+<organization>Netflix, Inc.</organization>
 <address>
     <postal>
-        <street>4875 Forest Drive</street>
-        <street> Suite 200</street>
-        <city>Columbia</city> <region>SC</region>
-        <code>29206</code>
-        <country>USA</country>
+        <street>2455 Heritage Green Ave</street>
+        <city>Davenport</city>
+        <region>FL</region>
+        <code>33837</code>
+        <country>United States of America</country>
     </postal>
-    <email>rrs@cisco.com</email>
+    <email>randall@lakerest.net</email>
 </address>
 </author>
 
 <!-- ************** PETER LEI ***************-->
 <author initials="P." surname="Lei" fullname="Peter Lei">
-<organization>Cisco Systems, Inc.</organization>
+<organization>Netflix, Inc.</organization>
 <address>
     <postal>
         <street>8735 West Higgins Road</street>
@@ -57,20 +57,14 @@ Authenticated Chunks for the Stream Control Transmission Protocol (SCTP)
         <country>USA</country>
     </postal>
     <phone></phone>
-    <email>peterlei@cisco.com</email>
+    <email>peterlei@netflix.com</email>
 </address>
 </author>
 
 <!-- ************** ERIC RESCORLA *************** -->
 <author initials="E." surname="Rescorla" fullname="Eric Rescorla">
-<organization>RTFM, Inc.</organization>
+<organization>Mozilla</organization>
 <address>
-    <postal>
-        <street>2064 Edgewood Drive</street>
-        <city>Palo Alto, CA 94303</city>
-        <country>USA</country>
-    </postal>
-    <phone>+1 650-320-8549</phone>
     <email>ekr@rtfm.com</email>
 </address>
 </author>
@@ -906,12 +900,13 @@ authenticated chunks by using the NULL key.</t>
 
 <section anchor="acks" title="Acknowledgments">
 <t>The authors wish to thank
-David Black,
-Sascha Grau,
-Russ Housley,
-Ivan Arias Rodriguez,
-Irene Ruengeler,
-and Magnus Westerlund
+<contact fullname="David Black"/>,
+<contact fullname="Sascha Grau"/>,
+<contact fullname="Russ Housley"/>,
+<contact fullname="Ivan Arias Rodriguez"/>,
+<contact fullname="Irene Rüngeler"/>,
+and
+<contact fullname="Magnus Westerlund"/>
 for their invaluable comments.</t>
 </section>
 </middle>
