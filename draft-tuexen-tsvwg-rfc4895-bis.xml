@@ -6,7 +6,7 @@
      submissionType="IETF"
      consensus="true"
      category="std"
-     docName="draft-tuexen-tsvwg-rfc4895-bis-02"
+     docName="draft-tuexen-tsvwg-rfc4895-bis-03"
      obsoletes="4895"
      version="3"
      tocDepth="4">
@@ -20,7 +20,7 @@ ToDo
 <title abbrev="SCTP Authentication Chunk">
 Authenticated Chunks for the Stream Control Transmission Protocol (SCTP)
 </title>
-
+<seriesInfo name="Internet-Draft" value="draft-tuexen-tsvwg-rfc4895-bis-03"/>
 
 <!-- ************** MICHAEL TUEXEN *************** -->
 <author initials="M." surname="Tüxen" fullname="Michael Tüxen">
@@ -59,7 +59,7 @@ Authenticated Chunks for the Stream Control Transmission Protocol (SCTP)
         <street>Suite 300</street>
         <city>Chicago</city> <region>IL</region>
         <code>60631</code>
-        <country>USA</country>
+        <country>United States of America</country>
     </postal>
     <phone></phone>
     <email>peterlei@netflix.com</email>
