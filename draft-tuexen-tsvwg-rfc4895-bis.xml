@@ -74,6 +74,13 @@ Authenticated Chunks for the Stream Control Transmission Protocol (SCTP)
 </address>
 </author>
 
+<!-- ************** HANNES TSCHOFENIG *************** -->
+<author initials="H." surname="Tschofenig" fullname="Hannes Tschofenig">
+<address>
+    <email>hannes.tschofenig@gmx.net</email>
+</address>
+</author>
+
 <date />
 
 <keyword>Internet-Draft</keyword>
