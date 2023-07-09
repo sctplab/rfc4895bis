@@ -736,6 +736,120 @@ If the same endpoint pair shared key is used for multiple endpoints and does
 not depend on the client, this intervention might not be necessary.</t>
 </section>
 
+<section>
+<name>Socket API Considerations</name>
+<t>This section describes how the socket API defined in
+<xref target='RFC6458'/> needs to be extended to provide a way for the
+application to observe the HMAC algorithms used for sending and receiving of
+AUTH chunks.</t>
+<t>Please note that this section is informational only.</t>
+<t>A socket API implementation based on <xref target='RFC6458'/> is, by means of
+the existing SCTP_AUTHENTICATION_EVENT event, extended to provide the event
+notification whenever a new HMAC algorithm is used in a received AUTH chunk.</t>
+<t>Furthermore, two new socket options for the level IPPROTO_SCTP and the name
+SCTP_EXPOSE_HMAC_IDENT_CHANGES and SCTP_SEND_HMAC_IDENT are defined as described
+below.
+The first socket option enables the monitoring of HMAC algorithms used in
+received AUTH chunks via the SCTP_AUTHENTICATION_EVENT event.
+The second socket option is used to query the HMAC algorithm used for sending
+AUTH chunks.</t>
+<t>Support for the SCTP_SEND_HMAC_IDENT and SCTP_EXPOSE_HMAC_IDENT_CHANGES
+socket options also needs to be added to the function sctp_opt_info().</t>
+
+<section anchor='api_expose_hmac_id_event'>
+<name>Extending the SCTP_AUTHENTICATION_EVENT event</name>
+<t>Section 6.1.8 of <xref target='RFC6458'/> defines the
+SCTP_AUTHENTICATION_EVENT event, which uses the following structure:</t>
+<sourcecode>
+struct sctp_authkey_event {
+    uint16_t auth_type;
+    uint16_t auth_flags;
+    uint32_t auth_length;
+    uint16_t auth_keynumber;
+    uint32_t auth_indication;
+    sctp_assoc_t auth_assoc_id;
+};
+</sourcecode>
+<t>This document updates this structure to</t>
+<sourcecode>
+struct sctp_authkey_event {
+    uint16_t auth_type;
+    uint16_t auth_flags;
+    uint32_t auth_length;
+    uint16_t auth_identifier; /* formerly auth_keynumber */
+    uint32_t auth_indication;
+    sctp_assoc_t auth_assoc_id;
+};
+</sourcecode>
+<t>by renaming auth_keynumber to auth_identifier.
+auth_identifier just replaces auth_keynumber in the context of
+<xref target='RFC6458'/>.
+In addition to that, the SCTP_AUTHENTICATION_EVENT event is extended to
+also indicate when a new HMAC Identifier is received and such reporting is
+explicitly enabled as described in <xref target='api_expose_hmac_id_sock_opt'/>.
+In this case auth_indication is SCTP_AUTH_NEW_HMAC and the new
+HMAC identifier is reported in auth_identifier.</t>
+</section>
+
+<section anchor='api_expose_hmac_id_sock_opt'>
+<name>Expose HMAC Identifier Usage (SCTP_EXPOSE_HMAC_IDENT_CHANGES)</name>
+
+<t>This option allows the application to enable and disable the
+reception of SCTP_AUTHENTICATION_EVENT events when a new HMAC
+Identifiers has been received in an AUTH chunk
+(see <xref target='api_expose_hmac_id_event'/>).
+This read/write socket option uses the level IPPROTO_SCTP and the name
+SCTP_EXPOSE_HMAC_IDENT_CHANGES.
+It is needed to provide backwards compatibility and the default is that these
+events are not reported.</t>
+<t>The following structure is used to enable or disable the reporting
+of newly received HMAC Identifiers in AUTH chunks:</t>
+<sourcecode>
+struct sctp_assoc_value {
+    sctp_assoc_t assoc_id;
+    uint32_t assoc_value;
+};
+</sourcecode>
+<dl>
+<dt>assoc_id:</dt>
+<dd><t>This parameter is ignored for one-to-one style sockets.
+For one-to-many style sockets, the application may fill in an association
+identifier or SCTP_{FUTURE|CURRENT|ALL}_ASSOC.</t></dd>
+<dt>assoc_value:</dt>
+<dd><t>Newly received HMAC Identifiers are reported if, and only if, this
+parameter is non-zero.</t></dd>
+</dl>
+</section>
+
+<section>
+<name>Get the HMAC Identifier being Sent (SCTP_SEND_HMAC_IDENT)</name>
+
+<t>During the SCTP association establishment a HMAC Identifier is selected which
+is used by an SCTP endpoint when sending AUTH chunks.
+An application can access the result of this selection by using this read-only
+socket option, which uses the level IPPROTO_SCTP and the name
+SCTP_SEND_HMAC_IDENT.</t>
+<t>The following structure is used to access HMAC Identifier used for
+sending AUTH chunks:</t>
+<sourcecode>
+struct sctp_assoc_value {
+    sctp_assoc_t assoc_id;
+    uint32_t assoc_value;
+};
+</sourcecode>
+<dl>
+<dt>assoc_id:</dt>
+<dd><t>This parameter is ignored for one-to-one style sockets.
+For one-to-many style sockets, the application fills in an association
+identifier.
+It is an error to use SCTP_{FUTURE|CURRENT|ALL}_ASSOC in assoc_id.</t></dd>
+<dt>assoc_value:</dt>
+<dd><t>This parameter contains the HMAC Identifier used for sending
+AUTH chunks.</t></dd>
+</dl>
+</section>
+</section>
+
 <section title="IANA Considerations">
 <!--
 <t>A chunk type for the AUTH chunk has to be assigned by IANA.
@@ -904,7 +1018,10 @@ for their invaluable comments.</t>
 </middle>
 
 <back>
-<references title='Normative References'>
+<references>
+<name>References</name>
+<references>
+<name>Normative References</name>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2104.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2434.xml"/>
@@ -913,6 +1030,11 @@ for their invaluable comments.</t>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.9260.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml-misc/reference.FIPS.180-2.2002.xml"/>
+</references>
+<references>
+<name>Informative References</name>
+<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6458.xml"/>
+</references>
 </references>
 </back>
 </rfc>
