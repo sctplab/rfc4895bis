@@ -92,7 +92,8 @@ The new parameters are used to establish the shared keys.
 <middle>
 
 <!-- ***** Introduction ******* -->
-<section anchor="intro" title="Introduction">
+<section anchor="intro">
+<name>Introduction</name>
 
 <t>SCTP uses 32-bit verification tags to protect itself against blind attackers.
 These values are not changed during the lifetime of an SCTP association.</t>
@@ -139,7 +140,8 @@ with the extension described in this document.</t>
 </section>
 
 <!-- ************** CONVENTIONS *************** -->
-<section anchor="conventions" title="Conventions">
+<section anchor="conventions">
+<name>Conventions</name>
 <t>The key words "<bcp14>MUST</bcp14>", "<bcp14>MUST NOT</bcp14>",
 "<bcp14>REQUIRED</bcp14>", "<bcp14>SHALL</bcp14>", "<bcp14>SHALL NOT</bcp14>",
 "<bcp14>SHOULD</bcp14>", "<bcp14>SHOULD NOT</bcp14>",
@@ -151,9 +153,9 @@ they appear in all capitals, as shown here.</t>
 </section>
 
 <!-- **********Parameter types***************** -->
-<section anchor="parametertypes" title="New Parameter Types">
-<t>
-This section defines the new parameter types that will be used to
+<section anchor="parametertypes">
+<name>New Parameter Types</name>
+<t>This section defines the new parameter types that will be used to
 negotiate the authentication during association setup.
 <xref target="parametertable"/> illustrates the new parameter types.</t>
 <table anchor="parametertable">
@@ -172,7 +174,8 @@ if the parameter is not understood.
 This is accomplished (as described  in <xref target="RFC9260">RFC 9260</xref>,
 Section 3.2.1.) by the  use of the upper bits of the parameter type.</t>
 
-<section anchor="random" title="Random Parameter (RANDOM)">
+<section anchor="random">
+<name>Random Parameter (RANDOM)</name>
 <t>This parameter is used to carry a random number of an arbitrary length.</t>
 <artwork>
  0                   1                   2                   3
@@ -214,7 +217,8 @@ to provide a 32-byte Random Number.
 For 32-byte Random Numbers, the Padding is empty.</t>
 </section>
 
-<section anchor="chunks" title="Chunk List Parameter (CHUNKS)">
+<section anchor="chunks">
+<name>Chunk List Parameter (CHUNKS)</name>
 
 <t>This parameter is used to specify which chunk types are
 required to be authenticated before being sent by the peer.</t>
@@ -266,7 +270,8 @@ for INIT, INIT-ACK, SHUTDOWN-COMPLETE, and AUTH chunks <bcp14>MUST</bcp14>
 be ignored.</t>
 </section>
 
-<section anchor="hmacalgo" title="Requested HMAC Algorithm Parameter (HMAC-ALGO)">
+<section anchor="hmacalgo">
+<name>Requested HMAC Algorithm Parameter (HMAC-ALGO)</name>
 
 <t>This parameter is used to list the HMAC Identifiers the peer
 <bcp14>MUST</bcp14> use.</t>
@@ -330,7 +335,8 @@ support the HMAC based on the SHA-1 algorithm.</t>
 </section>
 </section>
 
-<section anchor="errorcauses" title="New Error Cause">
+<section anchor="errorcauses">
+<name>New Error Cause</name>
 <t>This section defines a new error cause that will be sent if
 an AUTH chunk is received with an unsupported HMAC Identifier.
 <xref target="causetable"/> illustrates the new error cause.</t>
@@ -343,8 +349,8 @@ an AUTH chunk is received with an unsupported HMAC Identifier.
 </tbody>
 </table>
 
-<section anchor="unsupportedhmacid"
-         title="Unsupported HMAC Identifier Error Cause">
+<section anchor="unsupportedhmacid">
+<name>Unsupported HMAC Identifier Error Cause</name>
 <t>This error cause is used to indicate that an AUTH chunk has been received
 with an unsupported HMAC Identifier.</t>
 <artwork>
@@ -381,7 +387,8 @@ receiver.</t>
 </section>
 
 <!-- **********Chunk types***************** -->
-<section anchor="chunktypes" title="New Chunk Type">
+<section anchor="chunktypes">
+<name>New Chunk Type</name>
 <t>
 This section defines the new chunk type that will be used to
 authenticate chunks.
@@ -400,7 +407,8 @@ discard all chunks that follow.
 This is accomplished (as described in <xref target="RFC9260">RFC 9260</xref>,
 Section 3.2.) by the use of the upper bits of the chunk type.</t>
 
-<section anchor="auth" title="Authentication Chunk (AUTH)">
+<section anchor="auth">
+<name>Authentication Chunk (AUTH)</name>
 
 <t>This chunk is used to hold the result of the HMAC calculation.</t>
 <artwork>
@@ -465,8 +473,10 @@ SCTP packet.</t>
 </section>
 
 <!-- **********PROCEDURES***************** -->
-<section title="Procedures">
-<section anchor="establishproc" title="Establishment of an Association Shared Key">
+<section>
+<name>Procedures</name>
+<section anchor="establishproc">
+<name>Establishment of an Association Shared Key</name>
 <t>An SCTP endpoint willing to receive or send authenticated chunks
 <bcp14>MUST</bcp14> send one RANDOM parameter in its INIT or INIT-ACK chunk.
 The RANDOM parameter <bcp14>MUST</bcp14> contain a 32-byte Random Number.
@@ -531,7 +541,8 @@ use network byte order to convert the key vectors to a number.
 The result of the concatenation is the association shared key.</t>
 </section>
 
-<section anchor="senderproc" title="Sending Authenticated Chunks" >
+<section anchor="senderproc">
+<name>Sending Authenticated Chunks</name>
  
 <t>Endpoints <bcp14>MUST</bcp14> send all requested chunks that have been
 authenticated where this has been requested by the peer.
@@ -588,7 +599,8 @@ in the HMAC computation.</t>
 the packet.</t>
 </section>
 
-<section anchor="recvproc" title="Receiving Authenticated Chunks" >
+<section anchor="recvproc">
+<name>Receiving Authenticated Chunks</name>
 
 <t>The receiver has a list of chunk types that
 it expects to be received only after an AUTH-chunk.
@@ -698,7 +710,8 @@ endpoint pair shared keys.</t>
 
 </section>
 
-<section title="Examples">
+<section>
+<name>Examples</name>
 <t>This section gives examples of message exchanges
 for association setup.</t>
 
@@ -756,7 +769,7 @@ AUTH chunks.</t>
 <t>Support for the SCTP_SEND_HMAC_IDENT and SCTP_EXPOSE_HMAC_IDENT_CHANGES
 socket options also needs to be added to the function sctp_opt_info().</t>
 
-<section anchor='api_expose_hmac_id_event'>
+<section anchor="api_expose_hmac_id_event">
 <name>Extending the SCTP_AUTHENTICATION_EVENT event</name>
 <t>Section 6.1.8 of <xref target='RFC6458'/> defines the
 SCTP_AUTHENTICATION_EVENT event, which uses the following structure:</t>
@@ -791,7 +804,7 @@ In this case auth_indication is SCTP_AUTH_NEW_HMAC and the new
 HMAC identifier is reported in auth_identifier.</t>
 </section>
 
-<section anchor='api_expose_hmac_id_sock_opt'>
+<section anchor="api_expose_hmac_id_sock_opt">
 <name>Expose HMAC Identifier Usage (SCTP_EXPOSE_HMAC_IDENT_CHANGES)</name>
 
 <t>This option allows the application to enable and disable the
@@ -850,7 +863,8 @@ AUTH chunks.</t></dd>
 </section>
 </section>
 
-<section title="IANA Considerations">
+<section>
+<name>IANA Considerations</name>
 <!--
 <t>A chunk type for the AUTH chunk has to be assigned by IANA.
 It is suggested to use the value given above.</t>
@@ -884,7 +898,8 @@ All registrations need to be listed in the document available at
 <eref target="http://www.iana.org/assignments/sctp-parameters">SCTP-parameters</eref>.
 The changes are described below.</t>
 
-<section title="A New Chunk Type">
+<section>
+<name>A New Chunk Type</name>
 <t>A chunk type for the AUTH chunk has been assigned by IANA.
 IANA has assigned the value (15), as given in <xref target="chunktable"/>.
 An additional line has been added in the "CHUNK TYPES" table of
@@ -898,7 +913,8 @@ ID Value    Chunk Type                                     Reference
 </artwork>
 </section>
 
-<section title="Three New Parameter Types">
+<section>
+<name>Three New Parameter Types</name>
 <t>Parameter types have been assigned for the RANDOM, CHUNKS, and HMAC-ALGO
 parameter by IANA.
 The values are as given in <xref target="parametertable"/>.
@@ -917,7 +933,8 @@ Requested HMAC Algorithm Parameter 32772 (0x8004)
 to the "INIT ACK Chunk Parameter Types" table.</t>
 </section>
 
-<section title="A New Error Cause">
+<section>
+<name>A New Error Cause</name>
 <t>An error cause for the Unsupported HMAC Identifier error cause has
 been assigned.
 The value (261) has been assigned as in <xref target="causetable"/>.
@@ -931,7 +948,8 @@ VALUE            CAUSE CODE                               REFERENCE
 
 </section>
 
-<section title="A New Table for HMAC Identifiers">
+<section>
+<name>A New Table for HMAC Identifiers</name>
 <t>HMAC Identifiers have to be maintained by IANA.
 Four initial values have been assigned by IANA as described in
 <xref target="Digesttable"/>.
@@ -956,7 +974,8 @@ The "Specification Required" policy of <xref target="RFC2434">RFC 2434</xref>
 </section>
 </section>
 
-<section title="Security Considerations">
+<section>
+<name>Security Considerations</name>
 <t>Without using endpoint shared keys, this extension only protects
 against modification or injection of authenticated chunks by attackers
 who did not capture the initial handshake setting up the SCTP association.</t>
@@ -1004,7 +1023,8 @@ captured the initial handshake can still inject or modify
 authenticated chunks by using the NULL key.</t>
 </section>
 
-<section anchor="acks" title="Acknowledgments">
+<section anchor="acks">
+<name>Acknowledgments</name>
 <t>The authors wish to thank
 <contact fullname="David Black"/>,
 <contact fullname="Sascha Grau"/>,
