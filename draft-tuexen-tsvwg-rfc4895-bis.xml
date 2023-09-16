@@ -6,7 +6,7 @@
      submissionType="IETF"
      consensus="true"
      category="std"
-     docName="draft-tuexen-tsvwg-rfc4895-bis-06-to-be"
+     docName="draft-tuexen-tsvwg-rfc4895-bis-06"
      obsoletes="4895"
      version="3"
      tocDepth="4">
@@ -20,7 +20,7 @@ ToDo
 <title abbrev="SCTP Authentication Chunk">
 Authenticated Chunks for the Stream Control Transmission Protocol (SCTP)
 </title>
-<seriesInfo name="Internet-Draft" value="draft-tuexen-tsvwg-rfc4895-bis-06-to-be"/>
+<seriesInfo name="Internet-Draft" value="draft-tuexen-tsvwg-rfc4895-bis-06"/>
 
 <!-- ************** MICHAEL TUEXEN *************** -->
 <author initials="M." surname="Tüxen" fullname="Michael Tüxen">
@@ -1025,6 +1025,9 @@ authenticated chunks by using the NULL key.</t>
 
 <section anchor="acks">
 <name>Acknowledgments</name>
+<t>The authors wish to thank Eric Rescorla for being a coauthor of
+<xref target='RFC4895'/>, which is the basis of this document.</t>
+
 <t>The authors wish to thank
 <contact fullname="David Black"/>,
 <contact fullname="Sascha Grau"/>,
@@ -1033,7 +1036,13 @@ authenticated chunks by using the NULL key.</t>
 <contact fullname="Irene Rüngeler"/>,
 and
 <contact fullname="Magnus Westerlund"/>
-for their invaluable comments.</t>
+for their invaluable comments on <xref target='RFC4895'/>.</t>
+<!--
+<t>Finally, the authors wish to thank
+Eric Rescorla and
+Martin Thomson
+for his invaluable comments on this document.</t>
+-->
 </section>
 </middle>
 
@@ -1053,6 +1062,7 @@ for their invaluable comments.</t>
 </references>
 <references>
 <name>Informative References</name>
+<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4895.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6458.xml"/>
 </references>
 </references>
