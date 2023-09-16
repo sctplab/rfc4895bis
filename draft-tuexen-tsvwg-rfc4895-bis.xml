@@ -6,7 +6,7 @@
      submissionType="IETF"
      consensus="true"
      category="std"
-     docName="draft-tuexen-tsvwg-rfc4895-bis-04"
+     docName="draft-tuexen-tsvwg-rfc4895-bis-05"
      obsoletes="4895"
      version="3"
      tocDepth="4">
@@ -20,7 +20,7 @@ ToDo
 <title abbrev="SCTP Authentication Chunk">
 Authenticated Chunks for the Stream Control Transmission Protocol (SCTP)
 </title>
-<seriesInfo name="Internet-Draft" value="draft-tuexen-tsvwg-rfc4895-bis-04"/>
+<seriesInfo name="Internet-Draft" value="draft-tuexen-tsvwg-rfc4895-bis-05"/>
 
 <!-- ************** MICHAEL TUEXEN *************** -->
 <author initials="M." surname="Tüxen" fullname="Michael Tüxen">
@@ -63,14 +63,6 @@ Authenticated Chunks for the Stream Control Transmission Protocol (SCTP)
     </postal>
     <phone></phone>
     <email>peterlei@netflix.com</email>
-</address>
-</author>
-
-<!-- ************** ERIC RESCORLA *************** -->
-<author initials="E." surname="Rescorla" fullname="Eric Rescorla">
-<organization>Mozilla</organization>
-<address>
-    <email>ekr@rtfm.com</email>
 </address>
 </author>
 
