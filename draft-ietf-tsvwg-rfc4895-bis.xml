@@ -566,14 +566,12 @@ uses the corresponding Shared Key Identifier.</t>
 function H as described by the HMAC Identifier and the shared association key K
 based on the endpoint pair shared key described by the Shared Key
 Identifier.
-The 'data' used for the computation of the AUTH-chunk
-is given by the AUTH chunk with its HMAC field set to zero
-(as shown in <xref target="dataformat"/>) followed
-by all the chunks that are placed after the AUTH chunk in
-the SCTP packet.</t>
-
-<figure anchor="dataformat">
+The 'data' used for the computation of the AUTH-chunk is given by the AUTH chunk
+with its HMAC field set to zero (as depicted below) followed by all the chunks
+that are placed after the AUTH chunk in the SCTP packet.</t>
 <artwork>
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 | Type = 0x0F   |   Flags=0     |         Chunk Length          |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -585,8 +583,6 @@ the SCTP packet.</t>
 |                               |           Padding             |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
-</figure>
-
 <t>Please note that all fields are in network byte order and that
 the field that will contain the complete HMAC is filled with zeroes.
 The length of the field shown as zero is the length of the HMAC described
@@ -625,8 +621,7 @@ If no endpoint pair shared key has been configured for that
 Shared Key Identifier, all authenticated chunks <bcp14>MUST</bcp14> be silently
 discarded.</t>
 
-<t>The receiver now performs the same calculation as described
-for the sender based on <xref target="dataformat"/>.
+<t>The receiver now performs the same calculation as described for the sender.
 If the result of the calculation is the same as given in the
 HMAC field, all the chunks following the AUTH chunk are processed.
 If the field does not match the result of the calculation, all the
