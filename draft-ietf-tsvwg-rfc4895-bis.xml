@@ -920,7 +920,7 @@ Provided documentation MUST include the following information:</t>
 <ol type='%c)'>
 <li><t>A message digest algorithm usable with the HMAC defined in
 <xref target="RFC2104">RFC 2104</xref> <bcp14>MUST</bcp14> be specified.</t></li>
-<li><t>A short name of the Message Digest Algorithm.</t></li>
+<li><t>A short name of the message digest algorithm.</t></li>
 </ol>
 </section>
 </section>
