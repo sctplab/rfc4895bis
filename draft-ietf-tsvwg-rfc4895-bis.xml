@@ -890,85 +890,38 @@ Please review these updates closely.-->
              Could the suggested number 0x0105 be used? -->
              
 
-<t>This document (RFC 4895) is the reference for all registrations
-described in this section.
-All registrations need to be listed in the document available at 
-<eref target="http://www.iana.org/assignments/sctp-parameters">SCTP-parameters</eref>.
-The changes are described below.</t>
-
-<section>
-<name>A New Chunk Type</name>
-<t>A chunk type for the AUTH chunk has been assigned by IANA.
-IANA has assigned the value (15), as given in <xref target="chunktable"/>.
-An additional line has been added in the "CHUNK TYPES" table of
+<t>IANA is requested to perform the following updates to
 <eref target="http://www.iana.org/assignments/sctp-parameters">SCTP-parameters</eref>:</t>
-<artwork>
-CHUNK TYPES
-
-ID Value    Chunk Type                                     Reference
---------    ----------                                     ---------
-15          Authentication Chunk (AUTH)                    [RFC4895]
-</artwork>
-</section>
-
+<ul>
+<li><t>In the Chunk Types Registry replace in the entry for the AUTH Chunk Type
+the reference to <xref target='RFC4895'/> by a reference to this document.
+</t></li>
+<li><t>In the Parameter Types Registry replace in the entry for the Random,
+the Chunk List, and the Requested HMAC Algorithm Parameter Chunk Parameter Type
+the reference to <xref target='RFC4895'/> by a reference to this document.
+</t></li>
+<li><t>In the Error Cause Codes Registry replace in the entry for the
+Unsupported HMAC Identifier Cause Code the reference to <xref target='RFC4895'/>
+by a reference to this document.
+</t></li>
+<li><t>In the Hashed Message Authentication Code (HMAC) Identifiers Registry
+replace in the Reference section the reference to <xref target='RFC4895'/>
+by a reference to this document.</t>
+<t>Replace each reference to <xref target='RFC4895'/> by a reference to
+this document for all currently registered Message Digest Algorithms.</t></li>
+</ul>
+<t>This document also defines one registry that IANA maintains through the
+definition of additional HMAC Identifiers.</t>
 <section>
-<name>Three New Parameter Types</name>
-<t>Parameter types have been assigned for the RANDOM, CHUNKS, and HMAC ALGO
-parameter by IANA.
-The values are as given in <xref target="parametertable"/>.
-This required two modifications to the "CHUNK PARAMETER TYPES" tables in
-<eref target="http://www.iana.org/assignments/sctp-parameters">SCTP-parameters</eref>:
-the first is the addition of three new lines to the "INIT Chunk Parameter Types"
-table:</t>
-<artwork>
-Chunk Parameter Type                       Value
---------------------                       -----
-Random                             32770 (0x8002)
-Chunk List                         32771 (0x8003)
-Requested HMAC Algorithm Parameter 32772 (0x8004)
-</artwork>
-<t>The second required change is the addition of the same three lines to the 
-to the "INIT ACK Chunk Parameter Types" table.</t>
-</section>
-
-<section>
-<name>A New Error Cause</name>
-<t>An error cause for the Unsupported HMAC Identifier error cause has
-been assigned.
-The value (261) has been assigned as in <xref target="causetable"/>.
-This requires an additional line of the "CAUSE CODES" table in
-<eref target="http://www.iana.org/assignments/sctp-parameters">SCTP-parameters</eref>:</t>
-<artwork>
-VALUE            CAUSE CODE                               REFERENCE
------            ----------------                         ---------
-261 (0x0105)     Unsupported HMAC Identifier              [RFC4895]
-</artwork>
-
-</section>
-
-<section>
-<name>A New Table for HMAC Identifiers</name>
-<t>HMAC Identifiers have to be maintained by IANA.
-Four initial values have been assigned by IANA as described in
-<xref target="Digesttable"/>.
-This required a new table "HMAC IDENTIFIERS" in
-<eref target="http://www.iana.org/assignments/sctp-parameters">SCTP-parameters</eref>:</t>
-<artwork>
-HMAC Identifier      Message Digest Algorithm             REFERENCE
----------------      ------------------------             ---------
-0                    Reserved                             [RFC4895]
-1                    SHA-1                                [RFC4895]
-2                    Reserved                             [RFC4895]
-3                    SHA-256                              [RFC4895]
-</artwork>
-<t>For registering a new HMAC Identifier with IANA, in this table, a request
-has to be made to assign such a number.
-This number must be unique and a message digest algorithm usable with the
-HMAC defined in <xref target="RFC2104">RFC 2104</xref> <bcp14>MUST</bcp14> be
-specified.
-The "Specification Required" policy of <xref target="RFC2434">RFC 2434</xref>
-<bcp14>MUST</bcp14> be applied.
-</t>
+<name>IETF-Defined HMAC Identifiers</name>
+<t>Additional HMAC Identifier can be allocated in the range 4 to 65535
+through a Specification Required action as defined in <xref target='RFC8126'/>.
+Provided documentation MUST include the following information:</t>
+<ol type='%c)'>
+<li><t>A message digest algorithm usable with the HMAC defined in
+<xref target="RFC2104">RFC 2104</xref> <bcp14>MUST</bcp14> be specified.</t></li>
+<li><t>A short name of the Message Digest Algorithm.</t></li>
+</ol>
 </section>
 </section>
 
@@ -1052,9 +1005,9 @@ for his invaluable comments on this document.</t>
 <name>Normative References</name>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2104.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
-<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2434.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3436.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4086.xml"/>
+<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8126.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.9260.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml-misc/reference.FIPS.180-2.2002.xml"/>
