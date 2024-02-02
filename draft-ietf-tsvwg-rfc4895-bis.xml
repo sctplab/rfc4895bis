@@ -267,6 +267,8 @@ AUTH chunks <bcp14>MUST NOT</bcp14> be listed in the CHUNKS parameter.
 However, if a CHUNKS parameter is received then the types
 for INIT, INIT ACK, SHUTDOWN COMPLETE, and AUTH chunks <bcp14>MUST</bcp14>
 be ignored.</t>
+<t>A CHUNKS parameter <bcp14>MAY</bcp14> contain chunk types being unknown to
+the receiver.</t>
 </section>
 
 <section anchor="hmacalgo">
@@ -481,8 +483,8 @@ SCTP packet.</t>
 The RANDOM parameter <bcp14>MUST</bcp14> contain a 32-byte Random Number.
 The Random Number should be generated in accordance with
 <xref target="RFC4086">RFC 4086</xref>.
-If the Random Number is not 32 bytes, the association <bcp14>MUST</bcp14> be
-aborted.
+If the length of the Random Number is not 32 bytes, the association
+<bcp14>MUST</bcp14> be aborted.
 The ABORT chunk <bcp14>SHOULD</bcp14> contain the error cause
 'Protocol Violation'.
 In case of INIT collision, the rules governing the handling of this
@@ -517,13 +519,14 @@ If there is no endpoint pair shared key, only one association shared key
 is computed by using an empty byte vector as the endpoint pair shared key.</t>
 
 <t>The RANDOM parameter, the CHUNKS parameter, and the HMAC ALGO
-parameter sent by each endpoint are concatenated as byte vectors.
+parameter sent by each endpoint <bcp14>MUST</bcp14> be concatenated in this
+sequence as byte vectors.
+Parameters that were not sent <bcp14>MUST</bcp14> be omitted from the
+concatenation process.
 These parameters include the parameter type, parameter length,
 and the parameter value, but padding is omitted; all padding
 <bcp14>MUST</bcp14> be removed from this concatenation before proceeding with
 further computation of keys.
-Parameters that were not sent are simply omitted from the
-concatenation process.
 The resulting two vectors are called the two key vectors.</t>
 <t>From the endpoint pair shared keys and the key vectors, the
 association shared keys are computed.
@@ -1029,6 +1032,7 @@ authenticated chunks by using the NULL key.</t>
 <contact fullname="Russ Housley"/>,
 <contact fullname="Ivan Arias Rodriguez"/>,
 <contact fullname="Irene Rüngeler"/>,
+<contact fullname="Nagesh Shamnur"/>,
 and
 <contact fullname="Magnus Westerlund"/>
 for their invaluable comments on <xref target='RFC4895'/>.</t>
