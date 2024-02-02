@@ -6,7 +6,7 @@
      submissionType="IETF"
      consensus="true"
      category="std"
-     docName="draft-ietf-tsvwg-rfc4895-bis-01-to-be"
+     docName="draft-ietf-tsvwg-rfc4895-bis-01"
      obsoletes="4895"
      version="3"
      tocDepth="4">
@@ -20,7 +20,7 @@ ToDo
 <title abbrev="SCTP Authentication Chunk">
 Authenticated Chunks for the Stream Control Transmission Protocol (SCTP)
 </title>
-<seriesInfo name="Internet-Draft" value="draft-ietf-tsvwg-rfc4895-bis-01-to-be"/>
+<seriesInfo name="Internet-Draft" value="draft-ietf-tsvwg-rfc4895-bis-01"/>
 
 <!-- ************** MICHAEL TUEXEN *************** -->
 <author initials="M." surname="Tüxen" fullname="Michael Tüxen">
@@ -83,6 +83,7 @@ procedures for the Stream Control Transmission Protocol (SCTP).
 This new chunk type can be used to authenticate SCTP chunks by using
 shared keys between the sender and receiver.
 The new parameters are used to establish the shared keys.
+This document obsoletes RFC 4895.
 </t>
 </abstract>
 
@@ -919,7 +920,7 @@ through a Specification Required action as defined in <xref target='RFC8126'/>.
 Provided documentation MUST include the following information:</t>
 <ol type='%c)'>
 <li><t>A message digest algorithm usable with the HMAC defined in
-<xref target="RFC2104">RFC 2104</xref> <bcp14>MUST</bcp14> be specified.</t></li>
+<xref target='RFC2104'/> <bcp14>MUST</bcp14> be specified.</t></li>
 <li><t>A short name of the message digest algorithm.</t></li>
 </ol>
 </section>
