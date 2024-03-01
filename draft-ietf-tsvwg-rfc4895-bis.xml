@@ -327,9 +327,9 @@ HMAC Identifiers.</t>
 </thead>
 <tbody>
 <tr><td>0</td>              <td>Reserved</td></tr>
-<tr><td>1</td>              <td>SHA-1 defined in <xref target="FIPS.180-2.2002"/></td></tr>
+<tr><td>1</td>              <td>SHA-1 defined in <xref target="NIST_FIPS_180_4"/></td></tr>
 <tr><td>2</td>              <td>Reserved</td></tr>
-<tr><td>3</td>              <td>SHA-256 defined in <xref target="FIPS.180-2.2002"/></td></tr>
+<tr><td>3</td>              <td>SHA-256 defined in <xref target="NIST_FIPS_180_4"/></td></tr>
 </tbody>
 </table>
 <t>Every endpoint supporting SCTP chunk authentication <bcp14>MUST</bcp14>
@@ -1011,7 +1011,7 @@ for his invaluable comments on this document.</t>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8126.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.9260.xml"/>
-<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml-misc/reference.FIPS.180-2.2002.xml"/>
+<xi:include href="https://bib.ietf.org/public/rfc/bibxml-nist/reference.NIST.NIST_FIPS_180-4.xml"/>
 </references>
 <references>
 <name>Informative References</name>
