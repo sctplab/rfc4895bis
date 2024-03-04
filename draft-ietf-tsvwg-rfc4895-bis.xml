@@ -103,9 +103,8 @@ have a method of proving that an SCTP chunk(s) was really
 sent by the original peer that started the association and not 
 by a malicious attacker.</t>  
 
-<t>Using Transport Layer Security (TLS), as defined in
-<xref target="RFC3436">RFC 3436</xref>, does not help because it only
-secures SCTP user data.</t>
+<t>Since it is required to protect SCTP control data, any solution only
+protecting SCTP user data is not sufficient.</t>
 
 <t>Therefore, an SCTP extension that provides a mechanism
 for deriving shared keys for each association is presented.
@@ -1105,7 +1104,6 @@ for his invaluable comments on this document.</t>
 <name>Normative References</name>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2104.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
-<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3436.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4086.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5926.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8126.xml"/>
