@@ -132,10 +132,10 @@ computation of the HMAC because the result of the HMAC computation is needed
 to compute the CRC32C checksum of the SCTP packet, which is placed in the
 common header of the SCTP packet.</t>
 
-<t>The SCTP extension for Dynamic Address Reconfiguration (ADD-IP) requires
-the usage of the extension described in this document.
-The SCTP Partial Reliability Extension (PR-SCTP) can be used in conjunction
-with the extension described in this document.</t>
+<t>The protocol extension defined in this document can be used in combination
+with any other currently defined SCTP extension.
+Its usage is required by the SCTP extension for Dynamic Address Reconfiguration
+as specified in <xref target="RFC5061"/>.</t>
 
 </section>
 
@@ -1116,6 +1116,7 @@ for his invaluable comments on this document.</t>
 <references>
 <name>Informative References</name>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4895.xml"/>
+<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5061.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6458.xml"/>
 </references>
 </references>
