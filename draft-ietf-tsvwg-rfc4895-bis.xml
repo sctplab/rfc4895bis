@@ -306,7 +306,9 @@ the receiver.</t>
 <t>The values expressed are a list of HMAC Identifiers that may be
 used by the peer.
 The values are listed by preference, with respect to the sender, where the
-first HMAC Identifier listed is the one most preferable to the sender.</t>
+first HMAC Identifier listed is the one most preferable to the sender.
+Any non-deprecated HMAC Identifier <bcp14>MUST</bcp14> be listed before any
+deprecated HMAC Identifier.</t>
 </dd>
 <dt>Padding: 0 or 2 bytes (unsigned integer)</dt>
 <dd>
@@ -327,30 +329,57 @@ HMAC Identifiers.</t>
 </thead>
 <tbody>
 <tr><td>0</td>              <td>Reserved</td></tr>
-<tr><td>1</td>              <td>SHA-1 defined in <xref target="NIST_FIPS_180_4"/></td></tr>
+<tr><td>1 (deprecated)</td> <td>SHA-1 defined in <xref target="NIST_FIPS_180_4"/></td></tr>
 <tr><td>2</td>              <td>Reserved</td></tr>
-<tr><td>3</td>              <td>SHA-256 defined in <xref target="NIST_FIPS_180_4"/></td></tr>
+<tr><td>3 (deprecated)</td> <td>SHA-256 defined in <xref target="NIST_FIPS_180_4"/></td></tr>
+<tr><td>4 (suggested)</td>  <td>SHA-256 defined in <xref target="NIST_FIPS_180_4"/> with directional keys</td></tr>
 </tbody>
 </table>
 <t>Every endpoint supporting SCTP chunk authentication <bcp14>MUST</bcp14>
-support the HMAC based on the SHA-1 algorithm.</t>
+support the HMAC based on the SHA-256 algorithm with directional keys.</t>
 </section>
 </section>
 
 <section anchor="errorcauses">
-<name>New Error Cause</name>
-<t>This section defines a new error cause that will be sent if
-an AUTH chunk is received with an unsupported HMAC Identifier.
+<name>New Error Causes</name>
+<t>This section defines two new error cause that will be sent if
+there is a collision related to the RANDOM parameters or an AUTH chunk is
+received with an unsupported HMAC Identifier.
 <xref target="causetable"/> illustrates the new error cause.</t>
 <table anchor="causetable">
 <thead>
 <tr><td>Cause Code</td><td>Error Cause Name</td></tr>
 </thead>
 <tbody>
+<tr><td>0x0100</td>    <td>RANDOM Collision</td></tr>
 <tr><td>0x0105</td>    <td>Unsupported HMAC Identifier</td></tr>
 </tbody>
 </table>
 
+<section anchor="randomcollision">
+<name>RANDOM Collision Error Cause</name>
+<t>This error cause is used to indicate that an AUTH chunk has been received
+with an unsupported HMAC Identifier.</t>
+<artwork>
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|Cause Code = 0x0100 (suggested)|       Cause Length = 4        |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</artwork>
+<dl newline="true">
+<dt>Cause Code: 2 bytes (unsigned integer)</dt>
+<dd>
+<t>This value <bcp14>MUST</bcp14> be set to the IANA assigned cause code
+for the 'RANDOM Collision' error cause.
+IANA is requested to assign the value 0x0100 (suggested) for this cause code</t>
+</dd>
+<dt>Cause Length: 2 bytes (unsigned integer)</dt>
+<dd>
+<t>This value <bcp14>MUST</bcp14> be set to 4.</t>
+</dd>
+</dl>
+</section>
 <section anchor="unsupportedhmacid">
 <name>Unsupported HMAC Identifier Error Cause</name>
 <t>This error cause is used to indicate that an AUTH chunk has been received
@@ -478,28 +507,60 @@ SCTP packet.</t>
 <section>
 <name>Procedures</name>
 <section anchor="establishproc">
-<name>Establishment of an Association Shared Key</name>
+<name>Association Shared Send and Receive Keys</name>
+<section>
+<name>Handling of RANDOM parameters</name>
 <t>An SCTP endpoint willing to receive or send authenticated chunks
 <bcp14>MUST</bcp14> send one RANDOM parameter in its INIT or INIT ACK chunk.
 The RANDOM parameter <bcp14>MUST</bcp14> contain a 32-byte Random Number.
 The Random Number should be generated in accordance with
-<xref target="RFC4086">RFC 4086</xref>.
-If the length of the Random Number is not 32 bytes, the association
+<xref target="RFC4086">RFC 4086</xref>.</t>
+<t>If the length of the received Random Number is not 32 bytes, the association
 <bcp14>MUST</bcp14> be aborted.
 The ABORT chunk <bcp14>SHOULD</bcp14> contain the error cause
-'Protocol Violation'.
-In case of INIT collision, the rules governing the handling of this
-Random Number follow the same pattern as those for the Verification Tag,
-as explained in Section 5.2.4 of <xref target="RFC9260">RFC 9260</xref>.
-Therefore, each endpoint knows its own Random Number and the peer's
-Random Number after the association has been established.</t>
+'Protocol Violation'.</t>
+<t>In the unlikely event that an endpoint receives a packet containing an INIT
+chunk and all of the following three conditions are fulfilled:</t>
+<ol>
+<li><t>The endpoint is in the COOKIE_WAIT or COOKIE-ECHOED state.</t></li>
+<li><t>The HMAC ALGO parameter contained in the INIT chunk lists at least one
+non-deprecated HMAC algorithm.</t></li>
+<li><t>The RANDOM parameter received in the INIT chunk is the same as the one
+sent in the INIT chunk it sent earlier.</t></li>
+</ol>
+<t>If all of these conditions are fulfilled, the endpoint <bcp14>MUST</bcp14>
+send a packet containing an ABORT chunk with the 'RANDOM Collision' error cause.
+The endpoint <bcp14>SHOULD</bcp14> retry setting up an association by sending
+packets with new INIT chunks.</t>
+<t>In any other case the an endpoint receiving a packet containing an
+INIT chunk with a RANDOM parameter <bcp14>MUST</bcp14> select a Random Number
+to be included in the INIT ACK it sends different from the Random Number
+received.</t>
+<t>These rules are similar to the one for the Verification Tag in case of
+INIT collisions, as explained in Section 5.2.4 of
+<xref target="RFC9260">RFC 9260</xref>.</t>
+<t>If an endpoint lists at least one non-deprecated HMAC Identifier in the
+HMAC ALGO parameter it sends in its INIT or INIT ACK chunk, it operates not
+in legacy mode.
+Only if all HMAC Identifiers listed are deprecated, the endpoint operates in
+legacy mode.
+Operating in legacy mode means supporting SCTP authentication as specified in
+<xref target="RFC4895"/> and not as specified by this document.</t>
+<t>Therefore, each endpoint knows its own Random Number and the peer's
+Random Number after the association has been established and these two
+Random Numbers are different if both endpoints are not operating in
+legacy mode.</t>
+</section>
 
+<section>
+<name>Computation of the Local and Remote Key Vectors</name>
 <t>An SCTP endpoint has a list of chunks it only accepts if they are
 received in an authenticated way.
-This list is included in the INIT and INIT ACK, and <bcp14>MAY</bcp14> be
-omitted if it is empty.
+These chunk types are listed in the CHUNKS parameter, which is included in
+the INIT or INIT ACK chunk.
+The CHUNKS parameter <bcp14>MAY</bcp14> be omitted if it is empty.
 Since this list does not change during the lifetime of the SCTP endpoint
-there is no problem in case of INIT collision.</t> 
+there is no problem in case of an INIT collision.</t> 
 
 <t>Each SCTP endpoint <bcp14>MUST</bcp14> include in the INIT and INIT ACK a
 HMAC ALGO parameter containing a list of HMAC Identifiers it requests the peer
@@ -511,14 +572,6 @@ in the HMAC ALGO parameter.
 An SCTP endpoint <bcp14>MUST NOT</bcp14> change the parameters listed in the
 HMAC ALGO parameter during the lifetime of the endpoint.</t>
 
-<t>Both endpoints of an association <bcp14>MAY</bcp14> have endpoint pair
-shared keys that are byte vectors and pre-configured or established by another
-mechanism.
-They are identified by the Shared Key Identifier.
-For each endpoint pair shared key, an association shared key is computed.
-If there is no endpoint pair shared key, only one association shared key
-is computed by using an empty byte vector as the endpoint pair shared key.</t>
-
 <t>The RANDOM parameter, the CHUNKS parameter, and the HMAC ALGO
 parameter sent by each endpoint <bcp14>MUST</bcp14> be concatenated in this
 sequence as byte vectors.
@@ -528,10 +581,27 @@ These parameters include the parameter type, parameter length,
 and the parameter value, but padding is omitted; all padding
 <bcp14>MUST</bcp14> be removed from this concatenation before proceeding with
 further computation of keys.
-The resulting two vectors are called the two key vectors.</t>
-<t>From the endpoint pair shared keys and the key vectors, the
-association shared keys are computed.
-This is performed by selecting the numerically smaller key vector and
+The resulting vector based on the parameters sent by an endpoint are called
+the local key vector and the resulting vector based on the parameters received
+by an endpint are called the remote key vector.</t>
+</section>
+
+<section>
+<name>Derivation of Association Send and Receive Keys</name>
+<t>Both endpoints of an association <bcp14>MAY</bcp14> have endpoint pair
+shared keys that are byte vectors and pre-configured or established by another
+mechanism.
+They are identified by the Shared Key Identifier.
+For each endpoint pair shared key, an association shared send and receive key 
+are computed.
+If there is are no endpoint pair shared keys configured, only one association
+shared send key and one association receive key is computed by using an empty
+byte vector as the endpoint pair shared key.</t>
+<t>The way association shared send and receive keys are computed from the
+endpoint shared keys depends on the peer operating in legacy more or not.</t>
+<t>If the peer operates in legacy mode, the association shared send key and
+the association shared receive key are the same.
+They are computed by selecting the numerically smaller key vector and
 concatenating it to the endpoint pair shared key, and then concatenating the
 numerically larger key vector to that.
 If the key vectors are equal as numbers but differ in length, then the
@@ -541,19 +611,31 @@ Otherwise, the key vectors are identical, and may be concatenated to
 the endpoint pair key in any order.
 The concatenation is performed on byte vectors, and all numerical comparisons
 use network byte order to convert the key vectors to a number.
-The result of the concatenation is the association shared key.</t>
+The result of the concatenation is the association shared send key and the
+association shared recv key.</t>
+<t>If the peer does not operate in legacy mode, the send context is
+defined as the concatenation of local key vector followed by the remote key
+vector.
+The receive context is defined as the concatenation of the remote key
+vector followed by the local key vector.
+For deriving the association shared send and receive keys, a method described
+in Section 3.1 of <xref target="RFC5926"/> is used.
+The association shared send key is the result of using HMAC-SHA512 as
+the key derivation function with the endpoint shared key as the Master_Key,
+the send context as the Context and 512 as the Output_Length. The association
+shared receive key is computed the same way, just using the receive context
+as the Context. In both cases "SCTP-AUTH" is used as the Label.</t>
+</section>
 </section>
 
 <section anchor="senderproc">
 <name>Sending Authenticated Chunks</name>
- 
-<t>Endpoints <bcp14>MUST</bcp14> send all requested chunks that have been
-authenticated where this has been requested by the peer.
-The other chunks <bcp14>MAY</bcp14> be sent whether or not they have been
-authenticated.
-If endpoint pair shared keys are used, one of them <bcp14>MUST</bcp14> be
-selected for authentication.</t>
 
+<t>All chunks, that have been requested by the peer to be sent authenticated,
+<bcp14>MUST</bcp14> be sent authenticated.
+The other chunks <bcp14>MAY</bcp14> be sent authenticated when possible.
+If endpoint pair shared keys are configured, one of them <bcp14>MUST</bcp14> be
+selected for authentication.</t>
 <t>To send chunks in an authenticated way, the sender <bcp14>MUST</bcp14>
 include these chunks after an AUTH chunk.
 This means that a sender <bcp14>MUST</bcp14> bundle chunks in order to
@@ -567,8 +649,8 @@ uses the corresponding Shared Key Identifier.</t>
 
 <t>The sender <bcp14>MUST</bcp14> calculate the Message Authentication Code (MAC)
 (as described in <xref target="RFC2104">RFC 2104</xref>) using the hash
-function H as described by the HMAC Identifier and the shared association key K
-based on the endpoint pair shared key described by the Shared Key
+function H as described by the HMAC Identifier and the shared association send
+key K based on the endpoint pair shared key described by the Shared Key
 Identifier.
 The 'data' used for the computation of the AUTH-chunk is given by the AUTH chunk
 with its HMAC field set to zero (as depicted below) followed by all the chunks
@@ -594,8 +676,7 @@ by the HMAC Identifier.
 The padding of all chunks being authenticated <bcp14>MUST</bcp14> be included
 in the HMAC computation.</t>
 
-<t>The sender fills the HMAC into the HMAC field and sends
-the packet.</t>
+<t>The sender fills the HMAC into the HMAC field and sends the packet.</t>
 </section>
 
 <section anchor="recvproc">
@@ -626,6 +707,8 @@ Shared Key Identifier, all authenticated chunks <bcp14>MUST</bcp14> be silently
 discarded.</t>
 
 <t>The receiver now performs the same calculation as described for the sender.
+It uses the shared association receive key K based on the endpoint pair shared
+key described by the Shared Key Identifier.
 If the result of the calculation is the same as given in the
 HMAC field, all the chunks following the AUTH chunk are processed.
 If the field does not match the result of the calculation, all the
@@ -891,26 +974,42 @@ Please review these updates closely.-->
              Could the suggested number 0x0105 be used? -->
              
 
+<t>[NOTE to RFC-Editor: "RFCXXXX" is to be replaced by the RFC number you
+assign this document.]</t>
+<t>[NOTE to RFC-Editor: The requested values for the cause code are tentative
+and to be confirmed by IANA.]</t>
 <t>IANA is requested to perform the following updates to
 <eref target="http://www.iana.org/assignments/sctp-parameters">SCTP-parameters</eref>:</t>
 <ul>
 <li><t>In the Chunk Types Registry replace in the entry for the AUTH Chunk Type
-the reference to <xref target='RFC4895'/> by a reference to this document.
+the reference to <xref target='RFC4895'/> by a reference to RFCXXXX.
 </t></li>
 <li><t>In the Parameter Types Registry replace in the entry for the Random,
 the Chunk List, and the Requested HMAC Algorithm Parameter Chunk Parameter Type
-the reference to <xref target='RFC4895'/> by a reference to this document.
+the reference to <xref target='RFC4895'/> by a reference to RFCXXXX.
 </t></li>
 <li><t>In the Error Cause Codes Registry replace in the entry for the
 Unsupported HMAC Identifier Cause Code the reference to <xref target='RFC4895'/>
-by a reference to this document.
+by a reference to RFCXXXX.
 </t></li>
 <li><t>In the Hashed Message Authentication Code (HMAC) Identifiers Registry
 replace in the Reference section the reference to <xref target='RFC4895'/>
-by a reference to this document.</t>
+by a reference to RFCXXXX.</t>
 <t>Replace each reference to <xref target='RFC4895'/> by a reference to
-this document for all currently registered Message Digest Algorithms.</t></li>
+RFCXXXX for all currently registered Message Digest Algorithms.</t></li>
 </ul>
+<t>A new error cause code has to be assigned by IANA.
+This requires an additional line in the "Error Cause Codes" registry for
+SCTP:</t>
+<table>
+<name>New Entry in Error Cause Codes Registry</name>
+<thead>
+<tr><th>Value</th>               <th>Cause Code</th>       <th>Reference</th></tr>
+</thead>
+<tbody>
+<tr><td>0x0100 (suggested) </td> <td>RANDOM Collision</td> <td>[RFCXXXX]</td></tr>
+</tbody>
+</table>
 <t>This document also defines one registry that IANA maintains through the
 definition of additional HMAC Identifiers.</t>
 <section>
@@ -1008,6 +1107,7 @@ for his invaluable comments on this document.</t>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3436.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4086.xml"/>
+<xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5926.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8126.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
 <xi:include href="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.9260.xml"/>
