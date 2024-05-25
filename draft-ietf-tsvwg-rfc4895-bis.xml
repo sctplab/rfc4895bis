@@ -37,7 +37,6 @@ Authenticated Chunks for the Stream Control Transmission Protocol (SCTP)
 
 <!-- ************** RANDALL STEWART ***************-->
 <author initials="R." surname="Stewart" fullname="Randall R. Stewart">
-<organization>Netflix, Inc.</organization>
 <address>
     <postal>
         <street>15214 Pendio Drive</street>
@@ -341,9 +340,10 @@ support the HMAC based on the SHA-256 algorithm with directional keys.</t>
 
 <section anchor="errorcauses">
 <name>New Error Causes</name>
-<t>This section defines two new error cause that will be sent if
-there is a collision related to the RANDOM parameters or an AUTH chunk is
-received with an unsupported HMAC Identifier.
+<t>This section defines two new error causes.
+One that will be sent if there is a collision related to the RANDOM parameters,
+and one that will be sent if an AUTH chunk is received with an unsupported
+HMAC Identifier.
 <xref target="causetable"/> illustrates the new error cause.</t>
 <table anchor="causetable">
 <thead>
@@ -357,8 +357,8 @@ received with an unsupported HMAC Identifier.
 
 <section anchor="randomcollision">
 <name>RANDOM Collision Error Cause</name>
-<t>This error cause is used to indicate that an AUTH chunk has been received
-with an unsupported HMAC Identifier.</t>
+<t>This error cause is used to indicate a collision of of Random Numbers
+has happened.</t>
 <artwork>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -518,20 +518,21 @@ The Random Number should be generated in accordance with
 <bcp14>MUST</bcp14> be aborted.
 The ABORT chunk <bcp14>SHOULD</bcp14> contain the error cause
 'Protocol Violation'.</t>
-<t>In the unlikely event that an endpoint receives a packet containing an INIT
-chunk and all of the following three conditions are fulfilled:</t>
+<t>It is unlikely but possible that an endpoint receives a packet containing an
+INIT chunk and all of the following three conditions are fulfilled:</t>
 <ol>
 <li><t>The endpoint is in the COOKIE_WAIT or COOKIE-ECHOED state.</t></li>
 <li><t>The HMAC ALGO parameter contained in the INIT chunk lists at least one
 non-deprecated HMAC algorithm.</t></li>
 <li><t>The RANDOM parameter received in the INIT chunk is the same as the one
-sent in the INIT chunk it sent earlier.</t></li>
+sent in the INIT chunk it sent earlier,
+i.e. both Random parameter contain the same Random Number.</t></li>
 </ol>
-<t>If all of these conditions are fulfilled, the endpoint <bcp14>MUST</bcp14>
+<t>In this case, the endpoint <bcp14>MUST</bcp14>
 send a packet containing an ABORT chunk with the 'RANDOM Collision' error cause.
 The endpoint <bcp14>SHOULD</bcp14> retry setting up an association by sending
-packets with new INIT chunks.</t>
-<t>In any other case the an endpoint receiving a packet containing an
+packets with a new INIT chunk.</t>
+<t>In any other case, an endpoint receiving a packet containing an
 INIT chunk with a RANDOM parameter <bcp14>MUST</bcp14> select a Random Number
 to be included in the INIT ACK it sends different from the Random Number
 received.</t>
@@ -545,10 +546,9 @@ Only if all HMAC Identifiers listed are deprecated, the endpoint operates in
 legacy mode.
 Operating in legacy mode means supporting SCTP authentication as specified in
 <xref target="RFC4895"/> and not as specified by this document.</t>
-<t>Therefore, each endpoint knows its own Random Number and the peer's
-Random Number after the association has been established and these two
-Random Numbers are different if both endpoints are not operating in
-legacy mode.</t>
+<t>After the association has been established, each endpoint knows its own
+Random Number and the peer's Random Number and these two Random Numbers are
+different if both endpoints are not operating in legacy mode.</t>
 </section>
 
 <section>
@@ -566,8 +566,8 @@ HMAC ALGO parameter containing a list of HMAC Identifiers it requests the peer
 to use.
 The receiver of an HMAC ALGO parameter <bcp14>SHOULD</bcp14> use the first
 listed algorithm it supports.
-The HMAC algorithm based on SHA-1 <bcp14>MUST</bcp14> be supported and included
-in the HMAC ALGO parameter.
+The HMAC algorithm based on SHA-256 with directional keys <bcp14>MUST</bcp14>
+be supported and included in the HMAC ALGO parameter.
 An SCTP endpoint <bcp14>MUST NOT</bcp14> change the parameters listed in the
 HMAC ALGO parameter during the lifetime of the endpoint.</t>
 
@@ -593,11 +593,11 @@ mechanism.
 They are identified by the Shared Key Identifier.
 For each endpoint pair shared key, an association shared send and receive key 
 are computed.
-If there is are no endpoint pair shared keys configured, only one association
+If there are no endpoint pair shared keys configured, only one association
 shared send key and one association receive key is computed by using an empty
 byte vector as the endpoint pair shared key.</t>
 <t>The way association shared send and receive keys are computed from the
-endpoint shared keys depends on the peer operating in legacy more or not.</t>
+endpoint shared keys depends on the peer operating in legacy mode or not.</t>
 <t>If the peer operates in legacy mode, the association shared send key and
 the association shared receive key are the same.
 They are computed by selecting the numerically smaller key vector and
@@ -611,7 +611,7 @@ the endpoint pair key in any order.
 The concatenation is performed on byte vectors, and all numerical comparisons
 use network byte order to convert the key vectors to a number.
 The result of the concatenation is the association shared send key and the
-association shared recv key.</t>
+association shared receive key.</t>
 <t>If the peer does not operate in legacy mode, the send context is
 defined as the concatenation of local key vector followed by the remote key
 vector.
@@ -772,7 +772,7 @@ the restart procedure does not work, because the restarting endpoint
 most likely does not know the association shared key of the old association
 to be restarted.
 However, if the restarting endpoint does know the old association shared key,
-he can successfully send the COOKIE ECHO chunk in a way that it is accepted by
+it can successfully send the COOKIE ECHO chunk in a way that it is accepted by
 the peer by using this old association shared key for the packet containing
 the AUTH chunk.
 After this operation, both endpoints have to use the new association shared
@@ -839,7 +839,7 @@ AUTH chunks.</t>
 <t>A socket API implementation based on <xref target='RFC6458'/> is, by means of
 the existing SCTP_AUTHENTICATION_EVENT event, extended to provide the event
 notification whenever a new HMAC algorithm is used in a received AUTH chunk.</t>
-<t>Furthermore, two new socket options for the level IPPROTO_SCTP and the name
+<t>Two new IPPROTO_SCTP-level socket options with the name
 SCTP_EXPOSE_HMAC_IDENT_CHANGES and SCTP_SEND_HMAC_IDENT are defined as described
 below.
 The first socket option enables the monitoring of HMAC algorithms used in
@@ -863,7 +863,7 @@ struct sctp_authkey_event {
     sctp_assoc_t auth_assoc_id;
 };
 </sourcecode>
-<t>This document updates this structure to</t>
+<t>This document updates this structure to:</t>
 <sourcecode>
 struct sctp_authkey_event {
     uint16_t auth_type;
@@ -875,11 +875,11 @@ struct sctp_authkey_event {
     sctp_assoc_t auth_assoc_id;
 };
 </sourcecode>
-<t>by renaming auth_keynumber to auth_identifier.
+<t>It renames auth_keynumber to auth_identifier.
 auth_identifier just replaces auth_keynumber in the context of
 <xref target='RFC6458'/>.
 In addition to that, the SCTP_AUTHENTICATION_EVENT event is extended to
-also indicate when a new HMAC Identifier is received and such reporting is
+also indicate when a new HMAC Identifier is received and this reporting is
 explicitly enabled as described in <xref target='api_expose_hmac_id_sock_opt'/>.
 In this case auth_indication is SCTP_AUTH_NEW_HMAC and the new
 HMAC identifier is reported in auth_identifier.</t>
@@ -888,14 +888,13 @@ HMAC identifier is reported in auth_identifier.</t>
 <section anchor="api_expose_hmac_id_sock_opt">
 <name>Expose HMAC Identifier Usage (SCTP_EXPOSE_HMAC_IDENT_CHANGES)</name>
 
-<t>This option allows the application to enable and disable the
+<t>This option allows the application to enable or disable the
 reception of SCTP_AUTHENTICATION_EVENT events when a new HMAC
-Identifiers has been received in an AUTH chunk
+Identifier has been received in an AUTH chunk
 (see <xref target='api_expose_hmac_id_event'/>).
 This read/write socket option uses the level IPPROTO_SCTP and the name
 SCTP_EXPOSE_HMAC_IDENT_CHANGES.
-It is needed to provide backwards compatibility and the default is that these
-events are not reported.</t>
+By default these events are not reported to provide backwards compatibility.</t>
 <t>The following structure is used to enable or disable the reporting
 of newly received HMAC Identifiers in AUTH chunks:</t>
 <sourcecode>
@@ -918,7 +917,7 @@ parameter is non-zero.</t></dd>
 <section>
 <name>Get the HMAC Identifier being Sent (SCTP_SEND_HMAC_IDENT)</name>
 
-<t>During the SCTP association establishment a HMAC Identifier is selected which
+<t>During the SCTP association establishment a HMAC Identifier is selected that
 is used by an SCTP endpoint when sending AUTH chunks.
 An application can access the result of this selection by using this read-only
 socket option, which uses the level IPPROTO_SCTP and the name
@@ -1009,6 +1008,19 @@ SCTP:</t>
 <tr><td>0x0100 (suggested) </td> <td>RANDOM Collision</td> <td>[RFCXXXX]</td></tr>
 </tbody>
 </table>
+<t>A new HMAC Identifier has to be assigned by IANA.
+This requires an additional line in the
+"Hashed Message Authentication Code (HMAC) Identifiers" registry for SCTP:</t>
+<table>
+<name>New Entry in HMAC Identifier Registry</name>
+<thead>
+<tr><th>HMAC Identifier</th><th>Message Digest Algorithm      </th><th>Reference</th></tr>
+</thead>
+<tbody>
+<tr><td>4 (suggested)  </td><td>SHA-256 with directional keys</td> <td>[RFCXXXX]</td></tr>
+</tbody>
+</table>
+<!--
 <t>This document also defines one registry that IANA maintains through the
 definition of additional HMAC Identifiers.</t>
 <section>
@@ -1022,6 +1034,7 @@ Provided documentation MUST include the following information:</t>
 <li><t>A short name of the message digest algorithm.</t></li>
 </ol>
 </section>
+-->
 </section>
 
 <section>
@@ -1048,8 +1061,8 @@ the association.</t>
 
 <t>Because SCTP already has a built-in mechanism that handles the
 reception of duplicated chunks, the presented solution makes
-use of this functionality and does not provide a method to avoid
-replay attacks by itself.
+use of this functionality and does not provide a method which improves
+the protection against replay attacks. 
 Of course, this only works within each SCTP association.
 Therefore, a separate shared key is used for each SCTP association to handle
 replay attacks covering multiple SCTP associations.</t>
@@ -1088,12 +1101,9 @@ authenticated chunks by using the NULL key.</t>
 and
 <contact fullname="Magnus Westerlund"/>
 for their invaluable comments on <xref target='RFC4895'/>.</t>
-<!--
 <t>Finally, the authors wish to thank
-Eric Rescorla and
-Martin Thomson
+<contact fullname="Timo Völker "/>
 for his invaluable comments on this document.</t>
--->
 </section>
 </middle>
 
