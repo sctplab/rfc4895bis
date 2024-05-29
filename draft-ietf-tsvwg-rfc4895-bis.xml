@@ -357,7 +357,7 @@ HMAC Identifier.
 
 <section anchor="randomcollision">
 <name>RANDOM Collision Error Cause</name>
-<t>This error cause is used to indicate a collision of of Random Numbers
+<t>This error cause is used to indicate a collision of Random Numbers
 has happened.</t>
 <artwork>
  0                   1                   2                   3
@@ -597,14 +597,14 @@ If there are no endpoint pair shared keys configured, only one association
 shared send key and one association receive key is computed by using an empty
 byte vector as the endpoint pair shared key.</t>
 <t>The way association shared send and receive keys are computed from the
-endpoint shared keys depends on the peer operating in legacy mode or not.</t>
+endpoint pair shared keys depends on the peer operating in legacy mode or not.</t>
 <t>If the peer operates in legacy mode, the association shared send key and
 the association shared receive key are the same.
 They are computed by selecting the numerically smaller key vector and
 concatenating it to the endpoint pair shared key, and then concatenating the
 numerically larger key vector to that.
 If the key vectors are equal as numbers but differ in length, then the
-concatenation order is the endpoint shared key, followed by the shorter
+concatenation order is the endpoint pair shared key, followed by the shorter
 key vector, followed by the longer key vector.
 Otherwise, the key vectors are identical, and may be concatenated to
 the endpoint pair key in any order.
@@ -620,7 +620,7 @@ vector followed by the local key vector.
 For deriving the association shared send and receive keys, a method described
 in Section 3.1 of <xref target="RFC5926"/> is used.
 The association shared send key is the result of using HMAC-SHA512 as
-the key derivation function with the endpoint shared key as the Master_Key,
+the key derivation function with the endpoint pair shared key as the Master_Key,
 the send context as the Context and 512 as the Output_Length. The association
 shared receive key is computed the same way, just using the receive context
 as the Context. In both cases "SCTP-AUTH" is used as the Label.</t>
@@ -643,7 +643,7 @@ authenticate them.</t>
 <t>If the endpoint has no endpoint pair shared key for the peer, it
 <bcp14>MUST</bcp14> use Shared Key Identifier zero with an empty endpoint pair
 shared key.
-If there are multiple endpoint shared keys the sender selects one and
+If there are multiple endpoint pair shared keys the sender selects one and
 uses the corresponding Shared Key Identifier.</t>
 
 <t>The sender <bcp14>MUST</bcp14> calculate the Message Authentication Code (MAC)
@@ -1039,7 +1039,7 @@ Provided documentation MUST include the following information:</t>
 
 <section>
 <name>Security Considerations</name>
-<t>Without using endpoint shared keys, this extension only protects
+<t>Without using endpoint pair shared keys, this extension only protects
 against modification or injection of authenticated chunks by attackers
 who did not capture the initial handshake setting up the SCTP association.</t>
 
@@ -1064,8 +1064,8 @@ reception of duplicated chunks, the presented solution makes
 use of this functionality and does not provide a method which improves
 the protection against replay attacks. 
 Of course, this only works within each SCTP association.
-Therefore, a separate shared key is used for each SCTP association to handle
-replay attacks covering multiple SCTP associations.</t>
+Therefore, a separate association shared key is used for each SCTP association
+to handle replay attacks covering multiple SCTP associations.</t>
 
 <t>Each endpoint presenting a list of more than one element in the
 HMAC ALGO parameter must be prepared for the peer using the weakest
