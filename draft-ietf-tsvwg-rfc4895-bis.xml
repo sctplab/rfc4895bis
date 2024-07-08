@@ -381,8 +381,9 @@ IANA is requested to assign the value 0x0100 (suggested) for this cause code</t>
 </section>
 <section anchor="unsupportedhmacid">
 <name>Unsupported HMAC Identifier Error Cause</name>
-<t>This error cause is used to indicate that an AUTH chunk has been received
-with an unsupported HMAC Identifier.</t>
+<t>This error cause was used to indicate that an AUTH chunk has been received
+with an unsupported HMAC Identifier as specified in <xref target='RFC4895'/>.
+The use of this error cause is deprecated by this specification.  </t>
 <artwork>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -691,10 +692,13 @@ after an AUTH chunk in the packet.</t>
 the HMAC Identifier field.
 If this algorithm was not specified by the receiver in the HMAC ALGO parameter
 in the INIT or INIT ACK chunk during association setup, the AUTH chunk and all
-the chunks after it <bcp14>MUST</bcp14> be discarded and an ERROR chunk
-<bcp14>SHOULD</bcp14> be sent with the error cause defined in
+the chunks after it <bcp14>MUST</bcp14> be silently discarded.
+Implementations compliant with <xref target='RFC4895'/> <bcp14>SHOULD</bcp14>
+send an ERROR chunk with the error cause defined in
+<xref target="unsupportedhmacid"/>.
+An SCTP implementations following this specification <bcp14>MUST</bcp14>
+silently discard ERROR chunks with the error cause defined in
 <xref target="unsupportedhmacid"/>.</t>
-
 <t>If an endpoint with no shared key receives a
 Shared Key Identifier other than 0, it <bcp14>MUST</bcp14> silently discard
 all authenticated chunks.
@@ -988,7 +992,7 @@ the reference to <xref target='RFC4895'/> by a reference to RFCXXXX.
 </t></li>
 <li><t>In the Error Cause Codes Registry replace in the entry for the
 Unsupported HMAC Identifier Cause Code the reference to <xref target='RFC4895'/>
-by a reference to RFCXXXX.
+by a reference to RFCXXXX. Additionally, mark the assignment as deprecated.
 </t></li>
 <li><t>In the Hashed Message Authentication Code (HMAC) Identifiers Registry
 replace in the Reference section the reference to <xref target='RFC4895'/>
