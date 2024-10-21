@@ -170,7 +170,7 @@ negotiate the authentication during association setup.
 <t>Note that the parameter format requires the
 receiver to ignore the parameter and continue processing
 if the parameter is not understood.
-This is accomplished (as described  in <xref target="RFC9260">RFC 9260</xref>,
+This is accomplished (as described  in <xref target="RFC9260"/>,
 Section 3.2.1.) by the  use of the upper bits of the parameter type.</t>
 
 <section anchor="random">
@@ -298,7 +298,7 @@ required to be authenticated before being sent by the peer.</t>
 be included once in the INIT or INIT ACK chunk if the sender wants to receive
 authenticated chunks.</t>
 <t>The ALL CHUNKS parameter <bcp14>MUST NOT</bcp14> be included in the INIT or
-INIT ACK chunk, if the peer only supports <xref target='RFC4895'/>.</t>
+INIT ACK chunk, if the peer only supports <xref target="RFC4895"/>.</t>
 </section>
 
 <section anchor="hmacalgo">
@@ -413,7 +413,7 @@ IANA is requested to assign the value 0x0100 (suggested) for this cause code</t>
 <section anchor="unsupportedhmacid">
 <name>Unsupported HMAC Identifier Error Cause</name>
 <t>This error cause was used to indicate that an AUTH chunk has been received
-with an unsupported HMAC Identifier as specified in <xref target='RFC4895'/>.
+with an unsupported HMAC Identifier as specified in <xref target="RFC4895"/>.
 The use of this error cause is deprecated by this specification.</t>
 <artwork>
  0                   1                   2                   3
@@ -466,7 +466,7 @@ authenticate chunks.
 <t>It should be noted that the AUTH-chunk format requires the
 receiver to ignore the chunk if it is not understood and silently
 discard all chunks that follow.
-This is accomplished (as described in <xref target="RFC9260">RFC 9260</xref>,
+This is accomplished (as described in <xref target="RFC9260"/>,
 Section 3.2.) by the use of the upper bits of the chunk type.</t>
 
 <section anchor="auth">
@@ -545,7 +545,7 @@ SCTP packet.</t>
 <bcp14>MUST</bcp14> send one RANDOM parameter in its INIT or INIT ACK chunk.
 The RANDOM parameter <bcp14>MUST</bcp14> contain a 32-byte Random Number.
 The Random Number should be generated in accordance with
-<xref target="RFC4086">RFC 4086</xref>.</t>
+<xref target="RFC4086"/>.</t>
 <t>If the length of the received Random Number is not 32 bytes, the association
 <bcp14>MUST</bcp14> be aborted.
 The ABORT chunk <bcp14>SHOULD</bcp14> contain the error cause
@@ -570,7 +570,7 @@ to be included in the INIT ACK it sends different from the Random Number
 received.</t>
 <t>These rules are similar to the one for the Verification Tag in case of
 INIT collisions, as explained in Section 5.2.4 of
-<xref target="RFC9260">RFC 9260</xref>.</t>
+<xref target="RFC9260"/>.</t>
 <t>If an endpoint lists at least one non-deprecated HMAC Identifier in the
 HMAC ALGO parameter it sends in its INIT or INIT ACK chunk, it operates not
 in legacy mode.
@@ -684,7 +684,7 @@ If there are multiple endpoint pair shared keys the sender selects one and
 uses the corresponding Shared Key Identifier.</t>
 
 <t>The sender <bcp14>MUST</bcp14> calculate the Message Authentication Code (MAC)
-(as described in <xref target="RFC2104">RFC 2104</xref>) using the hash
+(as described in <xref target="RFC2104"/>) using the hash
 function H as described by the HMAC Identifier and the shared association send
 key K based on the endpoint pair shared key described by the Shared Key
 Identifier.
@@ -729,7 +729,7 @@ the HMAC Identifier field.
 If this algorithm was not specified by the receiver in the HMAC ALGO parameter
 in the INIT or INIT ACK chunk during association setup, the AUTH chunk and all
 the chunks after it <bcp14>MUST</bcp14> be silently discarded.
-Implementations compliant with <xref target='RFC4895'/> <bcp14>SHOULD</bcp14>
+Implementations compliant with <xref target="RFC4895"/> <bcp14>SHOULD</bcp14>
 send an ERROR chunk with the error cause defined in
 <xref target="unsupportedhmacid"/>.
 An SCTP implementations following this specification <bcp14>MUST</bcp14>
@@ -861,7 +861,7 @@ and DATA chunk at the server side.
 This intervention may be realized by a COMMUNICATION-UP notification
 followed by the presentation of the endpoint pair shared
 key by the upper layer to the SCTP stack, see for example Section 11 of
-<xref target="RFC9260">RFC 9260</xref>.
+<xref target="RFC9260"/>.
 If this intervention is not possible due to limitations of the API
 (for example, the socket API), the server might discard the AUTH and DATA chunk,
 making a retransmission of the DATA chunk necessary.
@@ -872,11 +872,11 @@ not depend on the client, this intervention might not be necessary.</t>
 <section>
 <name>Socket API Considerations</name>
 <t>This section describes how the socket API defined in
-<xref target='RFC6458'/> needs to be extended to provide a way for the
+<xref target="RFC6458"/> needs to be extended to provide a way for the
 application to observe the HMAC algorithms used for sending and receiving of
 AUTH chunks.</t>
 <t>Please note that this section is informational only.</t>
-<t>A socket API implementation based on <xref target='RFC6458'/> is, by means of
+<t>A socket API implementation based on <xref target="RFC6458"/> is, by means of
 the existing SCTP_AUTHENTICATION_EVENT event, extended to provide the event
 notification whenever a new HMAC algorithm is used in a received AUTH chunk.</t>
 <t>Two new IPPROTO_SCTP-level socket options with the name
@@ -891,7 +891,7 @@ socket options also needs to be added to the function sctp_opt_info().</t>
 
 <section anchor="api_expose_hmac_id_event">
 <name>Extending the SCTP_AUTHENTICATION_EVENT event</name>
-<t>Section 6.1.8 of <xref target='RFC6458'/> defines the
+<t>Section 6.1.8 of <xref target="RFC6458"/> defines the
 SCTP_AUTHENTICATION_EVENT event, which uses the following structure:</t>
 <sourcecode>
 struct sctp_authkey_event {
@@ -917,10 +917,10 @@ struct sctp_authkey_event {
 </sourcecode>
 <t>It renames auth_keynumber to auth_identifier.
 auth_identifier just replaces auth_keynumber in the context of
-<xref target='RFC6458'/>.
+<xref target="RFC6458"/>.
 In addition to that, the SCTP_AUTHENTICATION_EVENT event is extended to
 also indicate when a new HMAC Identifier is received and this reporting is
-explicitly enabled as described in <xref target='api_expose_hmac_id_sock_opt'/>.
+explicitly enabled as described in <xref target="api_expose_hmac_id_sock_opt"/>.
 In this case auth_indication is SCTP_AUTH_NEW_HMAC and the new
 HMAC identifier is reported in auth_identifier.</t>
 </section>
@@ -931,7 +931,7 @@ HMAC identifier is reported in auth_identifier.</t>
 <t>This option allows the application to enable or disable the
 reception of SCTP_AUTHENTICATION_EVENT events when a new HMAC
 Identifier has been received in an AUTH chunk
-(see <xref target='api_expose_hmac_id_event'/>).
+(see <xref target="api_expose_hmac_id_event"/>).
 This read/write socket option uses the level IPPROTO_SCTP and the name
 SCTP_EXPOSE_HMAC_IDENT_CHANGES.
 By default these events are not reported to provide backwards compatibility.</t>
@@ -1020,20 +1020,20 @@ and to be confirmed by IANA.]</t>
 <eref target="http://www.iana.org/assignments/sctp-parameters">SCTP-parameters</eref>:</t>
 <ul>
 <li><t>In the Chunk Types Registry replace in the entry for the AUTH Chunk Type
-the reference to <xref target='RFC4895'/> by a reference to RFCXXXX.
+the reference to <xref target="RFC4895"/> by a reference to RFCXXXX.
 </t></li>
 <li><t>In the Parameter Types Registry replace in the entry for the Random,
 the Chunk List, and the Requested HMAC Algorithm Parameter Chunk Parameter Type
-the reference to <xref target='RFC4895'/> by a reference to RFCXXXX.
+the reference to <xref target="RFC4895"/> by a reference to RFCXXXX.
 </t></li>
 <li><t>In the Error Cause Codes Registry replace in the entry for the
-Unsupported HMAC Identifier Cause Code the reference to <xref target='RFC4895'/>
+Unsupported HMAC Identifier Cause Code the reference to <xref target="RFC4895"/>
 by a reference to RFCXXXX. Additionally, mark the assignment as deprecated.
 </t></li>
 <li><t>In the Hashed Message Authentication Code (HMAC) Identifiers Registry
-replace in the Reference section the reference to <xref target='RFC4895'/>
+replace in the Reference section the reference to <xref target="RFC4895"/>
 by a reference to RFCXXXX.</t>
-<t>Replace each reference to <xref target='RFC4895'/> by a reference to
+<t>Replace each reference to <xref target="RFC4895"/> by a reference to
 RFCXXXX for all currently registered Message Digest Algorithms.</t></li>
 </ul>
 <t>A new chunk parameter type has to be assigned by IANA.
@@ -1142,7 +1142,7 @@ authenticated chunks by using the NULL key.</t>
 <section anchor="acks">
 <name>Acknowledgments</name>
 <t>The authors wish to thank Eric Rescorla for being a coauthor of
-<xref target='RFC4895'/>, which is the basis of this document.</t>
+<xref target="RFC4895"/>, which is the basis of this document.</t>
 
 <t>The authors wish to thank
 <contact fullname="David Black"/>,
@@ -1153,9 +1153,10 @@ authenticated chunks by using the NULL key.</t>
 <contact fullname="Nagesh Shamnur"/>,
 and
 <contact fullname="Magnus Westerlund"/>
-for their invaluable comments on <xref target='RFC4895'/>.</t>
+for their invaluable comments on <xref target="RFC4895"/>.</t>
 <t>Finally, the authors wish to thank
-<contact fullname="Timo Völker "/>
+<contact fullname="Timo Völker "/> and
+<contact fullname="Magnus Westerlund"/>
 for his invaluable comments on this document.</t>
 </section>
 </middle>
