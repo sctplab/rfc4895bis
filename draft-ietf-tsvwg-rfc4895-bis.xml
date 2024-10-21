@@ -297,6 +297,8 @@ required to be authenticated before being sent by the peer.</t>
 <t>Either the ALL CHUNKS parameter or the CHUNKS parameter <bcp14>MUST</bcp14>
 be included once in the INIT or INIT ACK chunk if the sender wants to receive
 authenticated chunks.</t>
+<t>The ALL CHUNKS parameter <bcp14>MUST NOT</bcp14> be included in the INIT or
+INIT ACK chunk, if the peer only supports <xref target='RFC4895'/>.</t>
 </section>
 
 <section anchor="hmacalgo">
@@ -586,10 +588,11 @@ different if both endpoints are not operating in legacy mode.</t>
 <t>An SCTP endpoint has a list of chunk types it only accepts if they are
 received in an authenticated way.
 If this list contains all chunk types except the ones for INIT, INIT ACK,
-SHUTDOWN COMPLETE, and AUTH chunks, the ALL CHUNKS parameter
-<bcp14>SHOULD</bcp14> be included in the INIT or INIT ACK chunk.
-If the list is smaller but not empty, the chunk types are listed in the
-CHUNKS parameter, which is included in the INIT or INIT ACK chunk.
+SHUTDOWN COMPLETE, and AUTH chunks and the peer does not operate in legacy mode,
+the ALL CHUNKS parameter <bcp14>SHOULD</bcp14> be included in the INIT or
+INIT ACK chunk.
+If this is not the case, the chunk types are listed in the CHUNKS parameter,
+which is included in the INIT or INIT ACK chunk.
 The CHUNKS parameter <bcp14>MAY</bcp14> be omitted if it the list of chunk types
 is empty.
 Since this list does not change during the lifetime of the SCTP endpoint
