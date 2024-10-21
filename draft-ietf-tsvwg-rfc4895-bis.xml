@@ -158,12 +158,13 @@ negotiate the authentication during association setup.
 <xref target="parametertable"/> illustrates the new parameter types.</t>
 <table anchor="parametertable">
 <thead>
-<tr><td>Parameter Type</td><td>Parameter Name</td></tr>
+<tr><td>Parameter Type</td>    <td>Parameter Name</td></tr>
 </thead>
 <tbody>
-<tr><td>0x8002</td>        <td>Random Parameter (RANDOM)</td></tr>
-<tr><td>0x8003</td>        <td>Chunk List Parameter (CHUNKS)</td></tr>
-<tr><td>0x8004</td>        <td>Requested HMAC Algorithm Parameter (HMAC ALGO)</td></tr>
+<tr><td>0x8002</td>            <td>Random Parameter (RANDOM)</td></tr>
+<tr><td>0x8003</td>            <td>Chunk List Parameter (CHUNKS)</td></tr>
+<tr><td>0x8004</td>            <td>Requested HMAC Algorithm Parameter (HMAC ALGO)</td></tr>
+<tr><td>0x8006 (suggested)</td><td>All Chunks Parameter (ALL CHUNKS)</td></tr>
 </tbody>
 </table>
 <t>Note that the parameter format requires the
@@ -179,12 +180,12 @@ Section 3.2.1.) by the  use of the upper bits of the parameter type.</t>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|     Parameter Type = 0x8002   |       Parameter Length        |
+|    Parameter Type = 0x8002    |       Parameter Length        |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                                                               |
 \                          Random Number                        /
 /                               +-------------------------------\
-|                               |           Padding             |
+|                               |            Padding            |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
 <dl newline="true">
@@ -224,7 +225,7 @@ required to be authenticated before being sent by the peer.</t>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|     Parameter Type = 0x8003   |       Parameter Length        |
+|    Parameter Type = 0x8003    |       Parameter Length        |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 | Chunk Type 1  | Chunk Type 2  | Chunk Type 3  | Chunk Type 4  |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -232,7 +233,7 @@ required to be authenticated before being sent by the peer.</t>
 \                              ...                              \
 /                                                               /
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-| Chunk Type n  |                   Padding                     |
+| Chunk Type n  |                    Padding                    |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
 <dl newline="true">
@@ -258,8 +259,9 @@ The Padding <bcp14>MUST NOT</bcp14> be longer than 3 bytes and it MUST be
 ignored by the receiver.</t>
 </dd>
 </dl>
-<t>The CHUNKS parameter <bcp14>MUST</bcp14> be included once in the INIT or
-INIT ACK chunk if the sender wants to receive authenticated chunks.
+<t>Either the CHUNKS parameter or the ALL CHUNKS parameter <bcp14>MUST</bcp14>
+be included once in the INIT or INIT ACK chunk if the sender wants to receive
+authenticated chunks.
 Its maximum length is 260 bytes.</t>
 <t>The chunk types for INIT, INIT ACK, SHUTDOWN COMPLETE, and
 AUTH chunks <bcp14>MUST NOT</bcp14> be listed in the CHUNKS parameter.
@@ -268,6 +270,33 @@ for INIT, INIT ACK, SHUTDOWN COMPLETE, and AUTH chunks <bcp14>MUST</bcp14>
 be ignored.</t>
 <t>A CHUNKS parameter <bcp14>MAY</bcp14> contain chunk types being unknown to
 the receiver.</t>
+</section>
+
+<section anchor="allchunks">
+<name>All Chunks Parameter (ALL CHUNKS)</name>
+
+<t>This parameter is used to specify that all allowed chunk types are
+required to be authenticated before being sent by the peer.</t>
+<artwork>
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|    Parameter Type = 0x8006    |     Parameter Length = 4      |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</artwork>
+<dl newline="true">
+<dt>Parameter Type: 2 bytes (unsigned integer)</dt>
+<dd>
+<t>This value <bcp14>MUST</bcp14> be set to 0x8006 (suggested).</t>
+</dd>
+<dt>Parameter Length: 2 bytes (unsigned integer)</dt>
+<dd>
+<t>This value <bcp14>MUST</bcp14> be set to 4.</t>
+</dd>
+</dl>
+<t>Either the ALL CHUNKS parameter or the CHUNKS parameter <bcp14>MUST</bcp14>
+be included once in the INIT or INIT ACK chunk if the sender wants to receive
+authenticated chunks.</t>
 </section>
 
 <section anchor="hmacalgo">
@@ -279,15 +308,15 @@ the receiver.</t>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|     Parameter Type = 0x8004   |       Parameter Length        |
+|    Parameter Type = 0x8004    |       Parameter Length        |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|          HMAC Identifier 1    |      HMAC Identifier 2        |
+|       HMAC Identifier 1       |       HMAC Identifier 2       |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 /                                                               /
 \                              ...                              \
 /                                                               /
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|        HMAC Identifier n      |           Padding             |
+|       HMAC Identifier n       |            Padding            |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
 <dl newline="true">
@@ -383,14 +412,14 @@ IANA is requested to assign the value 0x0100 (suggested) for this cause code</t>
 <name>Unsupported HMAC Identifier Error Cause</name>
 <t>This error cause was used to indicate that an AUTH chunk has been received
 with an unsupported HMAC Identifier as specified in <xref target='RFC4895'/>.
-The use of this error cause is deprecated by this specification.  </t>
+The use of this error cause is deprecated by this specification.</t>
 <artwork>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |      Cause Code = 0x0105      |       Cause Length = 6        |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|         HMAC Identifier       |            Padding            |
+|        HMAC Identifier        |            Padding            |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
 <dl newline="true">
@@ -446,15 +475,15 @@ Section 3.2.) by the use of the upper bits of the chunk type.</t>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-| Type = 0x0F   |   Flags=0     |             Length            |
+|  Type = 0x0F  |   Flags = 0   |            Length             |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|    Shared Key Identifier      |        HMAC Identifier        |
+|     Shared Key Identifier     |        HMAC Identifier        |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                                                               |
 \                             HMAC                              /
 /                                                               \
 /                               +-------------------------------\
-|                               |           Padding             |
+|                               |            Padding            |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
 <dl newline="true">
@@ -554,11 +583,15 @@ different if both endpoints are not operating in legacy mode.</t>
 
 <section>
 <name>Computation of the Local and Remote Key Vectors</name>
-<t>An SCTP endpoint has a list of chunks it only accepts if they are
+<t>An SCTP endpoint has a list of chunk types it only accepts if they are
 received in an authenticated way.
-These chunk types are listed in the CHUNKS parameter, which is included in
-the INIT or INIT ACK chunk.
-The CHUNKS parameter <bcp14>MAY</bcp14> be omitted if it is empty.
+If this list contains all chunk types except the ones for INIT, INIT ACK,
+SHUTDOWN COMPLETE, and AUTH chunks, the ALL CHUNKS parameter
+<bcp14>SHOULD</bcp14> be included in the INIT or INIT ACK chunk.
+If the list is smaller but not empty, the chunk types are listed in the
+CHUNKS parameter, which is included in the INIT or INIT ACK chunk.
+The CHUNKS parameter <bcp14>MAY</bcp14> be omitted if it the list of chunk types
+is empty.
 Since this list does not change during the lifetime of the SCTP endpoint
 there is no problem in case of an INIT collision.</t> 
 
@@ -572,7 +605,7 @@ be supported and included in the HMAC ALGO parameter.
 An SCTP endpoint <bcp14>MUST NOT</bcp14> change the parameters listed in the
 HMAC ALGO parameter during the lifetime of the endpoint.</t>
 
-<t>The RANDOM parameter, the CHUNKS parameter, and the HMAC ALGO
+<t>The RANDOM parameter, the CHUNKS or ALL CHUNKS parameter, and the HMAC ALGO
 parameter sent by each endpoint <bcp14>MUST</bcp14> be concatenated in this
 sequence as byte vectors.
 Parameters that were not sent <bcp14>MUST</bcp14> be omitted from the
@@ -659,14 +692,14 @@ that are placed after the AUTH chunk in the SCTP packet.</t>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-| Type = 0x0F   |   Flags=0     |         Chunk Length          |
+|  Type = 0x0F  |   Flags = 0   |         Chunk Length          |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|    Shared Key Identifier      |        HMAC Identifier        |
+|     Shared Key Identifier     |        HMAC Identifier        |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                                                               |
 \                               0                               /
 /                               +-------------------------------\
-|                               |           Padding             |
+|                               |            Padding            |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
 <t>Please note that all fields are in network byte order and that
@@ -734,7 +767,7 @@ after them, and the receiver does not have an STCB for that
 packet, then authentication is based on the contents of the COOKIE ECHO
 chunk.
 In this situation, the receiver <bcp14>MUST</bcp14> authenticate the chunks in
-the packet by using the RANDOM parameters, CHUNKS parameters and
+the packet by using the RANDOM parameters, CHUNKS or ALL CHUNKS parameters and
 HMAC_ALGO parameters obtained from the COOKIE ECHO chunk, and
 possibly a local shared secret as inputs to the authentication
 procedure specified in <xref target="recvproc"/>.
@@ -807,8 +840,8 @@ given by the following message exchange.</t>
     -------------------- COOKIE ECHO -------------------->
     &lt;-------------------- COOKIE ACK ---------------------
 </artwork>
-<t>Please note that the CHUNKS parameter is optional in the
-INIT and INIT ACK.</t>
+<t>Please note that the CHUNKS and ALL CHUNKS parameters are optional in the
+INIT and INIT ACK chunks.</t>
 <t>If the server wants to receive DATA chunks in an authenticated
 way, the following message exchange is possible:</t>
 <artwork>
@@ -1000,6 +1033,19 @@ by a reference to RFCXXXX.</t>
 <t>Replace each reference to <xref target='RFC4895'/> by a reference to
 RFCXXXX for all currently registered Message Digest Algorithms.</t></li>
 </ul>
+<t>A new chunk parameter type has to be assigned by IANA.
+This requires an additional line in the "Chunk Parameter Types" registry for
+SCTP:</t>
+<table>
+<name>New Entry in Chunk Paramter Types Registry</name>
+<thead>
+<tr><th>ID</th>               <th>Chunk Parameter Type</th><th>Reference</th></tr>
+</thead>
+<tbody>
+<tr><td>0x8006 (suggested) </td> <td>All Chunks</td> <td>[RFCXXXX]</td></tr>
+</tbody>
+</table>
+
 <t>A new error cause code has to be assigned by IANA.
 This requires an additional line in the "Error Cause Codes" registry for
 SCTP:</t>
